@@ -2,6 +2,38 @@
 <html>
 
 <head>
+  <style>
+    body,
+    h1,
+    h2 {
+      margin: 0
+    }
+    p {
+      margin: 0;
+      padding-bottom: 10px;
+    }
+    #navbar {
+      position: fixed;
+      background-color: red;
+      height: 100%;
+      width: 100px;
+      margin: 0;
+    }
+
+    #navbar-button-container {
+      padding-top: 20px;
+      margin-left: 5px;
+    }
+
+    #content {
+      position: fixed;
+      margin-left: 100px;
+      padding-left: 20px;
+      height: 100%;
+      width: 100%;
+      background-color: rgb(218, 218, 218);
+    }
+  </style>
   <meta charset="UTF-8">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <title>Hello World!</title>
@@ -9,12 +41,14 @@
 
 <body>
   <div id="navbar">
-    <button id="button1"> setting </button>
-    <button id="button2"> procurement </button>
-    <button id="button3"> invoice </button>
+    <div id="navbar-button-container">
+      <p><button id="button1"> setting </button></p>
+      <p><button id="button2"> procurement </button></p>
+      <p><button id="button3"> invoice </button></p>
+    </div>
   </div>
   <div id="content">
-    <h2 style='color: red;''>Let jQuery AJAX Change This Text</h2>
+    <h2>Welcome</h2>
   </div>
 </body>
 <script src="../renderer.js"></script>
