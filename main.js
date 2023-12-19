@@ -10,7 +10,7 @@ const createWindow = () => {
             nodeIntegration: true
         }
     })
-    win.loadFile('index.html')
+    win.loadFile('./templates/index.html')
 }
 
 app.whenReady().then(() => {
