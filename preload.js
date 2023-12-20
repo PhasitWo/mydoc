@@ -45,10 +45,11 @@ function saveEssentialPath(obj) {
 
 async function loadDB() {
   let paths = getEssentialPath()
-  if (paths == null)
+  if (paths.school == null)
     return null
   else if (paths == -1)
     return -1
+  console.log("pass")
   var workbook = new excel.Workbook()
   workbook = await workbook.xlsx.readFile(paths.school)
   var ws = workbook.worksheets[0]

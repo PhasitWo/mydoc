@@ -22,6 +22,11 @@
       padding-bottom: 10px;
     }
 
+    h1 {
+      padding-top: 10px;
+      color: whitesmoke;
+    }
+
     #navbar {
       position: fixed;
       background-color: #1e2124;
@@ -37,7 +42,7 @@
     #content {
       position: fixed;
       margin-left: 120px;
-      padding-left: 20px;
+      padding-left: 40px;
       height: 100%;
       width: 100%;
       background-color: #282b30;
@@ -67,29 +72,36 @@
       height: 47px;
       position: absolute;
       left: 0;
-      top: 0%;
+      top: 0;
       z-index: -1;
       border-radius: 6px;
       display: none;
     }
 
-    .navbar-link li:hover a {
-      color: #1e2124; 
-      transition: 0.3s;
+    /* change focus-within to hover for another style */
+    .navbar-link li:focus-within a {
+      color: #1e2124 !important;
+      transition: 1.6s;
     }
 
-    .navbar-link li:hover ~ .active {
+    .navbar-link li a:hover {
+      color: #7289da;
+    }
+
+    .navbar-link li:focus-within~.active {
       display: block;
       transition: 0.15s;
     }
 
-    .navbar-link li:nth-child(1):hover ~ .active {
+    .navbar-link li:nth-child(1):focus-within~.active {
       top: 0%;
     }
-    .navbar-link li:nth-child(2):hover ~ .active {
+
+    .navbar-link li:nth-child(2):focus-within~.active {
       top: 35.33%;
     }
-    .navbar-link li:nth-child(3):hover ~ .active {
+
+    .navbar-link li:nth-child(3):focus-within~.active {
       top: 68.66%;
     }
   </style>
@@ -102,15 +114,21 @@
   <div id="navbar">
     <div id="navbar-link-container">
       <ul class="navbar-link">
-        <li><a id="link1" href="#"><p>Setting</p></a></li>
-        <li><a id="link2" href="#"><p>Procurement</p></a></li>
-        <li><a id="link3" href="#"><p>Invoice</p></a></li>
+        <li><a id="link1" href="#">
+            <p>Setting</p>
+          </a></li>
+        <li><a id="link2" href="#">
+            <p>Procurement</p>
+          </a></li>
+        <li><a id="link3" href="#">
+            <p>Receipt</p>
+          </a></li>
         <div class="active"></div>
       </ul>
     </div>
   </div>
   <div id="content">
-    <h2 style="padding-top: 10px;">Welcome</h2>
+    <h1>Welcome</h1>
   </div>
 </body>
 <script src="../renderer.js"></script>

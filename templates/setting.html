@@ -1,3 +1,37 @@
+<style>
+    input::file-selector-button {
+        font-size: small;
+        font-weight: bold;
+        color: #1e2124;
+        padding: 0.2em;
+        border: thin solid grey;
+        border-radius: 100px;
+    }
+
+    input::file-selector-button:hover {
+        color: #7289da;
+    }
+
+    #save-button {
+        font-weight: bold;
+        font-size: medium;
+        color: whitesmoke;
+        background-color: #308132;
+        border-radius: 50px;
+        border: none;
+        text-align: center;
+        width: 100px;
+        height: 40px;
+    }
+
+    .path {
+        color: #7289da;
+    }
+
+    .browse-label {
+        font-weight: 500;
+    }
+</style>
 <h1> Settings </h1><br>
 <p>
     <label for="school-browse" class="browse-label">ไฟล์ Database</label><br>
@@ -34,6 +68,7 @@
     <input id="form6-browse" type="file"><br>
     <label id="form6-path" class="path"></label>
 </p>
+<br>
 <button id="save-button"> Save </button>
 <script>
 
@@ -73,7 +108,7 @@
                 let val = document.getElementById(prop + "-path").textContent
                 paths[prop] = (val == "----None----") ? null : val
             }
-            
+
         });
         console.log(paths)
         api.saveEssentialPath(paths)
@@ -81,34 +116,3 @@
         location.reload()
     }
 </script>
-<style>
-    input::file-selector-button {
-        font-size: small;
-        font-weight: bold;
-        color: #1e2124;
-        padding: 0.5em;
-        border: thin solid grey;
-        border-radius: 100px;
-    }
-
-    input::file-selector-button:hover {
-        font-weight: bold;
-        color: #7289da;
-        padding: 0.5em;
-        border: thin solid grey;
-        border-radius: 100px;
-    }
-
-    #save-button {
-        font-weight: bold;
-        color: #1e2124;
-    }
-
-    .path {
-        color: #7289da;
-    }
-
-    .browse-label {
-        font-weight: 500;
-    }
-</style>
