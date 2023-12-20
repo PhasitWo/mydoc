@@ -36,7 +36,7 @@
 </p>
 <button id="save-button"> Save </button>
 <script>
-    
+
     function loadPaths() {
         var paths = api.getEssentialPath()
         if (paths == -1)
@@ -66,12 +66,19 @@
     document.getElementById("save-button").onclick = () => {
         var paths = Object();
         ["school", "form1", "form2", "form3", "form4", "form5", "form6"].forEach(prop => {
-            let val = document.getElementById(prop + "-browse").files[0].path
-            // please fix .path is undefine!!!
-            paths[prop] = (val == null) ? null : val
+            try {
+                let val = document.getElementById(prop + "-browse").files[0].path
+                paths[prop] = val
+            } catch {
+                let val = document.getElementById(prop + "-path").textContent
+                paths[prop] = (val == "----None----") ? null : val
+            }
+            
         });
         console.log(paths)
         api.saveEssentialPath(paths)
+        alert("Settings Saved")
+        location.reload()
     }
 </script>
 <style>
