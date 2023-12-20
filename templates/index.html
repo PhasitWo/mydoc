@@ -78,22 +78,26 @@
       display: none;
     }
 
+    .black {
+      color: #1e2124 !important;
+    }
+
     /* change focus-within to hover for another style */
-    .navbar-link li:focus-within a {
+    /* .navbar-link li:focus-within a {
       color: #1e2124 !important;
       transition: 1.6s;
-    }
+    } */
 
     .navbar-link li a:hover {
       color: #7289da;
     }
 
-    .navbar-link li:focus-within~.active {
+    /* .navbar-link li:focus-within~.active {
       display: block;
       transition: 0.15s;
-    }
+    } */
 
-    .navbar-link li:nth-child(1):focus-within~.active {
+    /* .navbar-link li:nth-child(1):focus-within~.active {
       top: 0%;
     }
 
@@ -103,7 +107,7 @@
 
     .navbar-link li:nth-child(3):focus-within~.active {
       top: 68.66%;
-    }
+    } */
   </style>
   <meta charset="UTF-8">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -123,7 +127,7 @@
         <li><a id="link3" href="#">
             <p>Receipt</p>
           </a></li>
-        <div class="active"></div>
+        <div id="active" class="active"></div>
       </ul>
     </div>
   </div>
