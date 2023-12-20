@@ -1,1 +1,107 @@
-<h1 style="color: red;"> This is setting.html</h1>
+<h1> Settings </h1><br>
+<p>
+    <label for="school-browse" class="browse-label">ไฟล์ Database</label><br>
+    <input id="school-browse" type="file"><br>
+    <label id="school-path" class="path"></label>
+</p>
+<p>
+    <label for="form1-browse" class="browse-label">Form จัดซื้อ หจก.3พ</label><br>
+    <input id="form1-browse" type="file"><br>
+    <label id="form1-path" class="path"></label>
+</p>
+<p>
+    <label for="form2-browse" class="browse-label">Form จัดซื้อ บำเหน็จศึกษาภัณฑ์</label><br>
+    <input id="form2-browse" type="file"><br>
+    <label id="form2-path" class="path"></label>
+</p>
+<p>
+    <label for="form3-browse" class="browse-label">Form ใบเสร็จ หจก.3พ ปกติ</label><br>
+    <input id="form3-browse" type="file"><br>
+    <label id="form3-path" class="path"></label>
+</p>
+<p>
+    <label for="form4-browse" class="browse-label">Form ใบเสร็จ หจก.3พ เลี่ยง</label><br>
+    <input id="form4-browse" type="file"><br>
+    <label id="form4-path" class="path"></label>
+</p>
+<p>
+    <label for="form5-browse" class="browse-label">Form ใบเสร็จ บำเหน็จศึกษาภัณฑ์ ปกติ</label><br>
+    <input id="form5-browse" type="file"><br>
+    <label id="form5-path" class="path"></label>
+</p>
+<p>
+    <label for="form6-browse" class="browse-label">Form ใบเสร็จ บำเหน็จศึกษาภัณฑ์ เลี่ยง</label><br>
+    <input id="form6-browse" type="file"><br>
+    <label id="form6-path" class="path"></label>
+</p>
+<button id="save-button"> Save </button>
+<script>
+    
+    function loadPaths() {
+        var paths = api.getEssentialPath()
+        if (paths == -1)
+            alert("error reading setting file, \nplease contact developer")
+        else {
+            for (var prop in paths) {
+                let val = paths[prop]
+                document.getElementById(prop + "-path").innerHTML = (val == null) ? "----None----" : val
+            }
+        }
+    }
+
+    // helper
+    // function setBrowse(id) {
+    //     var browseButton = document.getElementById(id + "-browse")
+    //     browseButton.onchange = () => {
+    //         document.getElementById(id + "-path").innerHTML = browseButton.files[0].path
+    //     }
+    // }
+    // ["school", "form1", "form2", "form3", "form4", "form5", "form6",].forEach(id => {
+    //     setBrowse(id)
+    // });
+
+    // load paths
+    loadPaths()
+    // save
+    document.getElementById("save-button").onclick = () => {
+        var paths = Object();
+        ["school", "form1", "form2", "form3", "form4", "form5", "form6"].forEach(prop => {
+            let val = document.getElementById(prop + "-browse").files[0].path
+            // please fix .path is undefine!!!
+            paths[prop] = (val == null) ? null : val
+        });
+        console.log(paths)
+        api.saveEssentialPath(paths)
+    }
+</script>
+<style>
+    input::file-selector-button {
+        font-size: small;
+        font-weight: bold;
+        color: #1e2124;
+        padding: 0.5em;
+        border: thin solid grey;
+        border-radius: 100px;
+    }
+
+    input::file-selector-button:hover {
+        font-weight: bold;
+        color: #7289da;
+        padding: 0.5em;
+        border: thin solid grey;
+        border-radius: 100px;
+    }
+
+    #save-button {
+        font-weight: bold;
+        color: #1e2124;
+    }
+
+    .path {
+        color: #7289da;
+    }
+
+    .browse-label {
+        font-weight: 500;
+    }
+</style>

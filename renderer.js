@@ -14,4 +14,3 @@ $("#button2").click(function () {
 $("#button3").click(function () {
     $("#content").load("invoice.html");
 });
-
