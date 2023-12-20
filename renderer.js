@@ -3,14 +3,14 @@
 //         .then(result => document.getElementById("school").innerHTML = result)
 // }
 
-$("#button1").click(function () {
+$("#link1").click(function () {
     $("#content").load("setting.html");
 });
 
-$("#button2").click(function () {
+$("#link2").click(function () {
     $("#content").load("procurement.html");
 });
 
-$("#button3").click(function () {
+$("#link3").click(function () {
     $("#content").load("invoice.html");
 });

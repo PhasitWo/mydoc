@@ -6,7 +6,7 @@
     @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@200;400&family=Nunito&display=swap');
 
-    html * {
+    html {
       font-family: 'Nunito', 'Kanit';
       color: #bdbdbd;
     }
@@ -30,9 +30,8 @@
       margin: 0;
     }
 
-    #navbar-button-container {
+    #navbar-link-container {
       padding-top: 20px;
-      margin-left: 5px;
     }
 
     #content {
@@ -43,22 +42,75 @@
       width: 100%;
       background-color: #282b30;
     }
+
+    .navbar-link {
+      list-style: none;
+      position: relative;
+      padding-inline-start: 0;
+    }
+
+    .navbar-link li {
+      margin-top: 10px;
+    }
+
+    .navbar-link li a {
+      text-decoration: none;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      color: #bdbdbd;
+    }
+
+    .active {
+      background: white;
+      width: 100%;
+      height: 47px;
+      position: absolute;
+      left: 0;
+      top: 0%;
+      z-index: -1;
+      border-radius: 6px;
+      display: none;
+    }
+
+    .navbar-link li:hover a {
+      color: #1e2124; 
+      transition: 0.3s;
+    }
+
+    .navbar-link li:hover ~ .active {
+      display: block;
+      transition: 0.15s;
+    }
+
+    .navbar-link li:nth-child(1):hover ~ .active {
+      top: 0%;
+    }
+    .navbar-link li:nth-child(2):hover ~ .active {
+      top: 35.33%;
+    }
+    .navbar-link li:nth-child(3):hover ~ .active {
+      top: 68.66%;
+    }
   </style>
   <meta charset="UTF-8">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <title>Hello World!</title>
+  <title>MyDoc</title>
 </head>
 
 <body>
   <div id="navbar">
-    <div id="navbar-button-container">
-      <p><button id="button1"> setting </button></p>
-      <p><button id="button2"> procurement </button></p>
-      <p><button id="button3"> invoice </button></p>
+    <div id="navbar-link-container">
+      <ul class="navbar-link">
+        <li><a id="link1" href="#"><p>Setting</p></a></li>
+        <li><a id="link2" href="#"><p>Procurement</p></a></li>
+        <li><a id="link3" href="#"><p>Invoice</p></a></li>
+        <div class="active"></div>
+      </ul>
     </div>
   </div>
   <div id="content">
-    <h2>Welcome</h2>
+    <h2 style="padding-top: 10px;">Welcome</h2>
   </div>
 </body>
 <script src="../renderer.js"></script>
