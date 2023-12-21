@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, dialog, ipcMain } = require('electron')
 const path = require('node:path')
 
 const createWindow = () => {
@@ -9,6 +9,16 @@ const createWindow = () => {
             preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: true
         }
+    })
+    ipcMain.handle("openDialog", async () => {
+        const { canceled, filePaths } = await dialog.showOpenDialog({
+            properties: ['openDirectory']
+        })
+        if (canceled)
+            return
+        else
+            return filePaths[0]
+
     })
     win.loadFile('./templates/index.html')
 }

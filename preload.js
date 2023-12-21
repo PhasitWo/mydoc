@@ -1,4 +1,4 @@
-const { contextBridge } = require('electron')
+const { contextBridge, ipcRenderer } = require('electron')
 var fs = require('fs')
 var excel = require('exceljs')
 
@@ -7,7 +7,8 @@ contextBridge.exposeInMainWorld('api', {
   loadDB: loadDB,
   getEssentialPath: getEssentialPath,
   saveEssentialPath: saveEssentialPath,
-  getControlNumber: getControlNumber
+  getControlNumber: getControlNumber,
+  openDialog: () => ipcRenderer.invoke("openDialog")
 })
 
 function getEssentialPath() {

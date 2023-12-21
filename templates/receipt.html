@@ -92,7 +92,7 @@
         </p>
         <p>
             <label for="save-at">Save at</label><br>
-            <button id="save-at" type="button" onclick="document.getElementById('folder-picker').click()" formnovalidate>Choose
+            <button id="save-at" type="button" onclick=getDir() formnovalidate>Choose
                 Folder</button>
             <input id="folder-picker" type="file" webkitdirectory directory multiple="false" onchange=getFolder()
                 style="display: none;"><br>
@@ -175,6 +175,11 @@
             option.innerHTML = school.name
             datalist.appendChild(option)
         });
+    }
+
+    async function getDir() {
+        let result = await api.openDialog()
+        document.getElementById("save-at-path").textContent = result
     }
 
     function loadAddress() {
