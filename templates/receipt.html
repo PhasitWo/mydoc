@@ -1,15 +1,16 @@
 <style>
     #receipt-number,
-    #delivery-number, #money {
+    #delivery-number,
+    #money {
         width: 80px;
     }
-    
+
     #gov-name,
     #file-name,
     #address {
         width: 300px;
     }
-    
+
     #receipt-container {
         overflow-y: scroll;
     }
@@ -99,11 +100,12 @@
         </p>
         <p>
             <label for=" shop">ร้านค้า</label><br>
-            <select id="shop" required>
+            <select id="shop" required onchange=validateExcelForm()>
                 <option disabled selected value>-select an option-</option>
-                <option value="1">shop1</option>
-                <option value="2">shop2</option>
-                <option value="3">shop3</option>
+                <option value="1a">shop1</option>
+                <option value="1b">shop2</option>
+                <option value="2a">shop3</option>
+                <option value="2b">shop4</option>
             </select>
         </p>
         <p class="vertical">
@@ -153,12 +155,41 @@
 </div>
 <script>
     // setup autocomplete
-    database.forEach(school => {
-        datalist = document.getElementById("gov-list")
-        option = document.createElement("option")
-        option.innerHTML = school.name
-        datalist.appendChild(option)
-    });
+    setupAutocomplete(database)
+    // essential paths
+    var essentialPaths = api.getEssentialPath()
+    if (essentialPaths == -1) {
+        alert("error reading setting file, \nplease contact developer")
+        $("#content").load("welcome.html")
+    }
+    
+    async function setupAutocomplete(database) {
+        if (database == null)
+            database = await loadDB() // loadDB after user set path to DB
+        database.forEach(school => {
+            datalist = document.getElementById("gov-list")
+            option = document.createElement("option")
+            option.innerHTML = school.name
+            datalist.appendChild(option)
+        });
+    }
+
+    function validateExcelForm() {
+        let selectedValue = document.getElementById("shop").value
+        let flag = true
+        if (selectedValue == "1a" && essentialPaths.form3 == null)
+            flag = false
+        else if (selectedValue == "1b" && essentialPaths.form4 == null)
+            flag = false
+        else if (selectedValue == "2a" && essentialPaths.form5 == null)
+            flag = false
+        else if (selectedValue == "2b" && essentialPaths.form6 == null)
+            flag = false
+        if (!flag) {
+            alert("please import form for that particular shop")
+            $("#link1").click()
+        }
+    }
 
     function loadAddress() {
         let val = document.getElementById("gov-name").value
@@ -220,5 +251,11 @@
             return false
         }
         return true
+    }
+
+    async function loadControlNumber() {
+        let result = await api.getControlNumber()
+        if (result == null)
+            alert("error loading control number\n ,please contact developer")
     }
 </script>

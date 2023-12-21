@@ -26,13 +26,19 @@ $("#link3").click(function () {
 });
 // load database
 var database
-api.loadDB().then((result) => {
+loadDB().then(result => {
+    database = result
+})
+// load welcome page
+$("#content").load("welcome.html")
+
+async function loadDB() { // reuse in rec and pro script
+    let result = await api.loadDB()
     if (result == -1)
         alert("loading Database\nerror reading setting file, \nplease contact developer")
     else if (result == null) {
         alert("please set path to database in Setting")
         $("#link1").click()
     }
-    database = result
-})
-
+    return result
+}
