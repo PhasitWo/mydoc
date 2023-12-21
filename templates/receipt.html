@@ -100,7 +100,7 @@
         </p>
         <p>
             <label for=" shop">ร้านค้า</label><br>
-            <select id="shop" required onchange=validateExcelForm()>
+            <select id="shop" required onchange=loadControlNumber()>
                 <option disabled selected value>-select an option-</option>
                 <option value="1a">shop1</option>
                 <option value="1b">shop2</option>
@@ -158,11 +158,14 @@
     setupAutocomplete(database)
     // essential paths
     var essentialPaths = api.getEssentialPath()
+    console.log("loading essential paths...")
     if (essentialPaths == -1) {
         alert("error reading setting file, \nplease contact developer")
         $("#content").load("welcome.html")
     }
-    
+    // empty row of control
+    var emptyRow
+
     async function setupAutocomplete(database) {
         if (database == null)
             database = await loadDB() // loadDB after user set path to DB
@@ -172,23 +175,6 @@
             option.innerHTML = school.name
             datalist.appendChild(option)
         });
-    }
-
-    function validateExcelForm() {
-        let selectedValue = document.getElementById("shop").value
-        let flag = true
-        if (selectedValue == "1a" && essentialPaths.form3 == null)
-            flag = false
-        else if (selectedValue == "1b" && essentialPaths.form4 == null)
-            flag = false
-        else if (selectedValue == "2a" && essentialPaths.form5 == null)
-            flag = false
-        else if (selectedValue == "2b" && essentialPaths.form6 == null)
-            flag = false
-        if (!flag) {
-            alert("please import form for that particular shop")
-            $("#link1").click()
-        }
     }
 
     function loadAddress() {
@@ -254,8 +240,23 @@
     }
 
     async function loadControlNumber() {
-        let result = await api.getControlNumber()
+        let shop = document.getElementById("shop").value
+        let formPath = essentialPaths["recForm" + shop]
+        if (formPath == null) {
+            alert("please import form for that particular shop")
+            $("#link1").click()
+            return
+        }
+        let filePath = essentialPaths["recControl" + shop]
+        if (filePath == null) {
+            alert("please import control excel file for that shop")
+            $("#link1").click()
+            return
+        }
+        let result = await api.getControlNumber(filePath)
         if (result == null)
             alert("error loading control number\n ,please contact developer")
+        document.getElementById("receipt-number").value = result.next
+        emptyRow = result.emptyRow
     }
 </script>
