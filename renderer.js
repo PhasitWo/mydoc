@@ -7,7 +7,6 @@ $("#link1").click(function () {
     document.getElementById("link2").classList.remove("black")
     document.getElementById("link3").classList.remove("black")
 });
-
 $("#link2").click(function () {
     $("#content").load("procurement.html");
     document.getElementById("active").style.display = "block"
@@ -40,5 +39,26 @@ async function loadDB() { // reuse in rec and pro script
         alert("please set path to database in Setting")
         $("#link1").click()
     }
+    console.log("loading database...")
     return result
 }
+
+function loadingStart(message) {
+    document.getElementById("loading").style.display = "block"
+    document.getElementById("navbar").classList.toggle("loading")
+    document.getElementById("content").classList.toggle("loading")
+    document.getElementById("loading-message").innerHTML = message
+}
+
+function loadingEnd() {
+    document.getElementById("loading").style.display = "none"
+    document.getElementById("navbar").classList.toggle("loading")
+    document.getElementById("content").classList.toggle("loading")
+    document.getElementById("loading-message").innerHTML = ""
+}
+
+  /* #content, #navbar {
+        filter: blur(1px);
+        pointer-events: none;
+        cursor: wait;
+    } */

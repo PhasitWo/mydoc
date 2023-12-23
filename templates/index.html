@@ -6,6 +6,81 @@
     @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@200;400&family=Nunito&display=swap');
 
+    /* #content, #navbar {
+        filter: blur(1px);
+        pointer-events: none;
+        cursor: wait;
+    } */
+
+    .loading {
+      filter: blur(1px);
+      pointer-events: none;
+      cursor: wait;
+    }
+
+    #loading {
+      background-color: #424549;
+      display: none;
+      position: fixed;
+      width: 280px;
+      height: 180px;
+      top: 30%;
+      left: 33%;
+      border-radius: 10px;
+      box-shadow: 0px 3px 7px 7px #00000048;
+    }
+
+    #loading-message {
+      position: relative;
+      top: 30%;
+      text-align: center;
+    }
+
+    .lds-ring {
+    
+      position: relative;
+      width: 42px;
+      height: 42px;
+      margin-left: auto;
+      margin-right: auto;
+      top: 35%;
+    }
+
+    .lds-ring div {
+      box-sizing: border-box;
+      display: block;
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      
+      border: 8px solid #fff;
+      border-radius: 50%;
+      animation: lds-ring 0.84s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+      border-color: #7289da transparent transparent transparent;
+    }
+
+    .lds-ring div:nth-child(1) {
+      animation-delay: -0.315s;
+    }
+
+    .lds-ring div:nth-child(2) {
+      animation-delay: -0.21s;
+    }
+
+    .lds-ring div:nth-child(3) {
+      animation-delay: -0.105s;
+    }
+
+    @keyframes lds-ring {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
     html {
       font-family: 'Nunito', 'Kanit';
       color: #bdbdbd;
@@ -136,6 +211,10 @@
     </div>
   </div>
   <div id="content">
+  </div>
+  <div id="loading">
+    <p id="loading-message"></p>
+    <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
   </div>
 </body>
 <script src="../renderer.js"></script>

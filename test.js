@@ -1,3 +1,7 @@
-let a = {a:1, b:2}
-if (a["c"] == undefined)
-console.log(a["c"])
+var excel = require('exceljs')
+
+async function test() {
+    var workbook = new excel.Workbook()
+    workbook = await workbook.xlsx.readFile(filePath)
+    var ws = workbook.worksheets[0]
+}

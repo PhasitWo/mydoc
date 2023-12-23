@@ -113,3 +113,5 @@ async function getControlNumber(filePath) {
   }
 }
 
+// create receipt
+// async function

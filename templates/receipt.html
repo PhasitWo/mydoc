@@ -1,4 +1,5 @@
 <style>
+
     #receipt-number,
     #delivery-number,
     #money {
@@ -55,7 +56,7 @@
         font-weight: bold;
         font-size: medium;
         color: whitesmoke;
-        background-color: #308132;
+        background-color: #7289da;
         border-radius: 50px;
         border: none;
         text-align: center;
@@ -64,7 +65,7 @@
     }
 
     #create:active {
-        background-color: #205921;
+        background-color: #4e5e98;
         color: rgb(172, 171, 171);
     }
 
@@ -99,9 +100,9 @@
             <span id="save-at-path"></span>
         </p>
         <p>
-            <label for=" shop">ร้านค้า</label><br>
+            <label for="shop">ร้านค้า</label><br>
             <select id="shop" required onchange=loadControlNumber()>
-                <option disabled selected value>-select an option-</option>
+                <option disabled selected value="">-select an option-</option>
                 <option value="1a">shop1</option>
                 <option value="1b">shop2</option>
                 <option value="2a">shop3</option>
@@ -110,7 +111,7 @@
         </p>
         <p class="vertical">
             <label for="receipt-number">เลขที่ใบเสร็จ(auto)</label>
-            <input id="receipt-number" type="number" min="1" required>
+            <input id="receipt-number" data-empty-row="" type="number" min="1" required>
         </p>
         <p class="vertical">
             <label for="receipt-date">ใบเสร็จลงวันที่</label>
@@ -149,7 +150,7 @@
         </p>
         <p>
             <br>
-            <button id="create" type="button" onclick=createClicked()>Create</button>
+            <button id="create" type="button" onclick="test()">Create</button>
         </p>
     </form>
 </div>
@@ -163,8 +164,6 @@
         alert("error reading setting file, \nplease contact developer")
         $("#content").load("welcome.html")
     }
-    // empty row of control
-    var emptyRow
 
     async function setupAutocomplete(database) {
         if (database == null)
@@ -219,7 +218,10 @@
             name: document.getElementById("file-name").value,
             saveAt: document.getElementById("save-at-path").textContent,
             receiptNumber: document.getElementById("receipt-number").value,
+            receiptEmptyRow: document.getElementById("receipt-number").dataset.emptyRow,
             receiptDate: document.getElementById("receipt-date").value,
+            receiptForm: essentialPaths[`recForm${document.getElementById("shop").value}`],
+            receiptControl: essentialPaths[`recControl${document.getElementById("shop").value}`],
             govName: document.getElementById("gov-name").value,
             address: document.getElementById("address").value,
             detail: document.getElementById("detail").value,
@@ -241,27 +243,41 @@
             console.log("missing folder")
             return false
         }
+        if (document.getElementById("receipt-number").dataset.emptyRow == "") {
+            console.log("emptyRow is empty")
+            return false
+        }
         return true
     }
 
     async function loadControlNumber() {
         let shop = document.getElementById("shop").value
+        let flag = true
         let formPath = essentialPaths["recForm" + shop]
         if (formPath == null) {
             alert("please import form for that particular shop")
-            $("#link1").click()
-            return
+            flag = false
         }
         let filePath = essentialPaths["recControl" + shop]
         if (filePath == null) {
             alert("please import control excel file for that shop")
-            $("#link1").click()
+            flag = false
+        }
+        if (!flag) {
+            document.getElementById("shop").value = ""
+            document.getElementById("receipt-number").value = ""
+            document.getElementById("receipt-number").dataset.emptyRow = ""
             return
         }
         let result = await api.getControlNumber(filePath)
         if (result == null)
             alert("error loading control number\n ,please contact developer")
         document.getElementById("receipt-number").value = result.next
-        emptyRow = result.emptyRow
+        document.getElementById("receipt-number").dataset.emptyRow = result.emptyRow
+    }
+
+    function test() {
+        loadingStart('Create Button is clicked!!!')
+        setTimeout(loadingEnd, 3000)
     }
 </script>
