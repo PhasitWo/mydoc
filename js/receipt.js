@@ -57,7 +57,7 @@ function createClicked() {
         detail: document.getElementById("detail").value,
         deliveryNumber: document.getElementById("delivery-number").value,
         deliveryDate: document.getElementById("delivery-date").value,
-        money: document.getElementById("money").value,
+        money: document.getElementById("money").value
     };
     api.createReceipt(out);
     console.log(out);

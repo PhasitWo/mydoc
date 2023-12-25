@@ -139,7 +139,7 @@ async function saveControl(filePath, emptyRow, number, detail, money, date) {
         var dd = String(today.getDate()).padStart(2, "0");
         var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
         var yyyy = today.getFullYear();
-        date = "Created on" + dd + "-" + mm + "-" + yyyy;
+        date = "Created on " + dd + "-" + mm + "-" + yyyy;
     }
     row.getCell(4).value = date;
     return workbook; // not save yet
