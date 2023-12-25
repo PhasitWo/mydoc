@@ -1,0 +1,81 @@
+#receipt-number,
+#delivery-number,
+#money {
+    width: 80px;
+}
+
+#gov-name,
+#file-name,
+#address {
+    width: 300px;
+}
+
+#receipt-container {
+    overflow-y: scroll;
+}
+
+.vertical {
+    display: inline-block;
+    margin: 2px;
+}
+
+.vertical label {
+    display: block;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"] {
+    background-color: #424549;
+    border-radius: 5px;
+    border-style: none;
+    color: #bdbdbd;
+}
+
+input:focus {
+    outline: none;
+}
+
+select {
+    background-color: #424549;
+    appearance: none;
+    color: #bdbdbd;
+    border-radius: 6px;
+    text-align: center;
+    height: 25px;
+}
+
+select:focus {
+    outline: none;
+}
+
+#create {
+    font-weight: bold;
+    font-size: medium;
+    color: whitesmoke;
+    background-color: #7289da;
+    border-radius: 50px;
+    border: none;
+    text-align: center;
+    width: 100px;
+    height: 40px;
+}
+
+#create:active {
+    background-color: #4e5e98;
+    color: rgb(172, 171, 171);
+}
+
+#save-at {
+    font-size: small;
+    font-weight: bold;
+    color: #1e2124;
+    padding: 0.2em;
+    border: thin solid grey;
+    border-radius: 100px;
+}
+
+#save-at:hover,
+#save-at-path {
+    color: #7289da;
+}

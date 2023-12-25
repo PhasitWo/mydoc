@@ -1,107 +1,27 @@
-<style>
-
-    #receipt-number,
-    #delivery-number,
-    #money {
-        width: 80px;
-    }
-
-    #gov-name,
-    #file-name,
-    #address {
-        width: 300px;
-    }
-
-    #receipt-container {
-        overflow-y: scroll;
-    }
-
-    .vertical {
-        display: inline-block;
-        margin: 2px;
-    }
-
-    .vertical label {
-        display: block;
-    }
-
-    input[type=text],
-    input[type=number],
-    input[type=date] {
-        background-color: #424549;
-        border-radius: 5px;
-        border-style: none;
-        color: #bdbdbd;
-    }
-
-    input:focus {
-        outline: none;
-    }
-
-    select {
-        background-color: #424549;
-        appearance: none;
-        color: #bdbdbd;
-        border-radius: 6px;
-        text-align: center;
-        height: 25px;
-    }
-
-    select:focus {
-        outline: none;
-    }
-
-
-    #create {
-        font-weight: bold;
-        font-size: medium;
-        color: whitesmoke;
-        background-color: #7289da;
-        border-radius: 50px;
-        border: none;
-        text-align: center;
-        width: 100px;
-        height: 40px;
-    }
-
-    #create:active {
-        background-color: #4e5e98;
-        color: rgb(172, 171, 171);
-    }
-
-
-    #save-at {
-        font-size: small;
-        font-weight: bold;
-        color: #1e2124;
-        padding: 0.2em;
-        border: thin solid grey;
-        border-radius: 100px;
-    }
-
-    #save-at:hover,
-    #save-at-path {
-        color: #7289da;
-    }
-</style>
+<link rel="stylesheet" href="../css/receipt.css">
 <div id="receipt-container">
-    <h1> Receipt </h1><br>
+    <h1>Receipt</h1>
+    <br />
     <form>
         <p>
-            <label for="file-name">File Name</label><br>
-            <input id="file-name" type="text" required>
+            <label for="file-name">File Name</label><br />
+            <input id="file-name" type="text" required />
         </p>
         <p>
-            <label for="save-at">Save at</label><br>
-            <button id="save-at" type="button" onclick=getDir() formnovalidate>Choose
-                Folder</button>
-            <input id="folder-picker" type="file" webkitdirectory directory multiple="false" onchange=getFolder()
-                style="display: none;"><br>
+            <label for="save-at">Save at</label><br />
+            <button
+                id="save-at"
+                type="button"
+                onclick="getDir()"
+                formnovalidate
+            >
+                Choose Folder
+            </button>
             <span id="save-at-path"></span>
         </p>
         <p>
-            <label for="shop">ร้านค้า</label><br>
-            <select id="shop" required onchange=loadControlNumber()>
+            <label for="shop">ร้านค้า</label><br />
+            <select id="shop" required onchange="loadControlNumber()">
                 <option disabled selected value="">-select an option-</option>
                 <option value="1a">shop1</option>
                 <option value="1b">shop2</option>
@@ -111,173 +31,60 @@
         </p>
         <p class="vertical">
             <label for="receipt-number">เลขที่ใบเสร็จ(auto)</label>
-            <input id="receipt-number" data-empty-row="" type="number" min="1" required>
+            <input
+                id="receipt-number"
+                data-empty-row=""
+                type="number"
+                min="1"
+                required
+            />
         </p>
         <p class="vertical">
             <label for="receipt-date">ใบเสร็จลงวันที่</label>
-            <input id="receipt-date" type="date">
+            <input id="receipt-date" type="date" />
         </p>
         <p>
-            <label for="gov-name">ส่วนราชการ</label><br>
-            <input id="gov-name" type="text" required autocomplete="off" list="gov-list" onchange=loadAddress()>
+            <label for="gov-name">ส่วนราชการ</label><br />
+            <input
+                id="gov-name"
+                type="text"
+                required
+                autocomplete="off"
+                list="gov-list"
+                onchange="loadAddress()"
+            />
             <datalist id="gov-list"></datalist>
-            <span id="gov-name-status" style="font-size: 14px;"></span>
+            <span id="gov-name-status" style="font-size: 14px"></span>
         </p>
         <p>
-            <label for="address">ที่อยู่</label><br>
-            <input id="address" type="text">
+            <label for="address">ที่อยู่</label><br />
+            <input id="address" type="text" />
         </p>
         <p>
-            <label for="detail">รายละเอียดใบเสร็จ</label><br>
-            <input id="detail" type="text" list="detail-list" required>
+            <label for="detail">รายละเอียดใบเสร็จ</label><br />
+            <input id="detail" type="text" list="detail-list" required />
             <datalist id="detail-list">
-                <option value="ค่าวัสดุการศึกษา">
-                <option value="ค่าวัสดุสำนักงาน">
-                <option value="หนังสือเรียน">
+                <option value="ค่าวัสดุการศึกษา"></option>
+                <option value="ค่าวัสดุสำนักงาน"></option>
+                <option value="หนังสือเรียน"></option>
             </datalist>
         </p>
         <p class="vertical">
             <label for="delivery-number">อ้างใบส่งของเลขที่</label>
-            <input id="delivery-number" type="text">
+            <input id="delivery-number" type="text" />
         </p>
         <p class="vertical">
             <label for="delivery-date">ใบส่งของวันที่</label>
-            <input id="delivery-date" type="date">
+            <input id="delivery-date" type="date" />
         </p>
         <p>
-            <label for="money">จำนวนเงิน</label><br>
-            <input id="money" type="number" min="0" required>
+            <label for="money">จำนวนเงิน</label><br />
+            <input id="money" type="number" min="0" required />
         </p>
         <p>
-            <br>
-            <button id="create" type="button" onclick="test()">Create</button>
+            <br />
+            <button id="create" onclick="createClicked()">Create</button>
         </p>
     </form>
 </div>
-<script>
-    // setup autocomplete
-    setupAutocomplete(database)
-    // essential paths
-    var essentialPaths = api.getEssentialPath()
-    console.log("loading essential paths...")
-    if (essentialPaths == -1) {
-        alert("error reading setting file, \nplease contact developer")
-        $("#content").load("welcome.html")
-    }
-
-    async function setupAutocomplete(database) {
-        if (database == null)
-            database = await loadDB() // loadDB after user set path to DB
-        database.forEach(school => {
-            datalist = document.getElementById("gov-list")
-            option = document.createElement("option")
-            option.innerHTML = school.name
-            datalist.appendChild(option)
-        });
-    }
-
-    async function getDir() {
-        let result = await api.openDialog()
-        document.getElementById("save-at-path").textContent = result
-    }
-
-    function loadAddress() {
-        let val = document.getElementById("gov-name").value
-        for (var school of database) {
-            if (val == school.name) {
-                document.getElementById("address").value = school.address
-                document.getElementById("address").readOnly = true
-                document.getElementById("gov-name-status").textContent = "✓ found in database"
-                document.getElementById("gov-name-status").style.color = "green"
-                return
-            }
-        }
-        document.getElementById("address").value = ""
-        document.getElementById("address").readOnly = false
-        document.getElementById("gov-name-status").textContent = "not found"
-        document.getElementById("gov-name-status").style.color = "red"
-    }
-
-    function getFolder() {
-        try {
-            let path = document.getElementById("folder-picker").files[0].path
-            path = path.substring(0, path.lastIndexOf("/") + 1)
-            document.getElementById("save-at-path").textContent = path
-        } catch (err) {
-            document.getElementById("save-at-path").textContent = ""
-            console.log(err)
-        }
-    }
-
-    function createClicked() {
-        if (!validateForm()) {
-            alert("please fill in all essential fields")
-            return
-        }
-        let out = {
-            name: document.getElementById("file-name").value,
-            saveAt: document.getElementById("save-at-path").textContent,
-            receiptNumber: document.getElementById("receipt-number").value,
-            receiptEmptyRow: document.getElementById("receipt-number").dataset.emptyRow,
-            receiptDate: document.getElementById("receipt-date").value,
-            receiptForm: essentialPaths[`recForm${document.getElementById("shop").value}`],
-            receiptControl: essentialPaths[`recControl${document.getElementById("shop").value}`],
-            govName: document.getElementById("gov-name").value,
-            address: document.getElementById("address").value,
-            detail: document.getElementById("detail").value,
-            deliveryNumber: document.getElementById("delivery-number").value,
-            deliveryDate: document.getElementById("delivery-date").value,
-            money: document.getElementById("money").value
-        }
-        console.log(out)
-    }
-
-    function validateForm() {
-        for (var id of ["file-name", "shop", "receipt-number", "gov-name", "detail", "money"]) {
-            if (document.getElementById(id).value == "") {
-                console.log(`missing ${id}`)
-                return false
-            }
-        }
-        if (document.getElementById("save-at-path").textContent == "") {
-            console.log("missing folder")
-            return false
-        }
-        if (document.getElementById("receipt-number").dataset.emptyRow == "") {
-            console.log("emptyRow is empty")
-            return false
-        }
-        return true
-    }
-
-    async function loadControlNumber() {
-        let shop = document.getElementById("shop").value
-        let flag = true
-        let formPath = essentialPaths["recForm" + shop]
-        if (formPath == null) {
-            alert("please import form for that particular shop")
-            flag = false
-        }
-        let filePath = essentialPaths["recControl" + shop]
-        if (filePath == null) {
-            alert("please import control excel file for that shop")
-            flag = false
-        }
-        if (!flag) {
-            document.getElementById("shop").value = ""
-            document.getElementById("receipt-number").value = ""
-            document.getElementById("receipt-number").dataset.emptyRow = ""
-            return
-        }
-        let result = await api.getControlNumber(filePath)
-        if (result == null)
-            alert("error loading control number\n ,please contact developer")
-        document.getElementById("receipt-number").value = result.next
-        document.getElementById("receipt-number").dataset.emptyRow = result.emptyRow
-    }
-
-    function test() {
-        loadingStart('Create Button is clicked!!!')
-        setTimeout(loadingEnd, 3000)
-    }
-</script>
+<script src="../js/receipt.js"></script>

@@ -1,157 +1,78 @@
-<style>
-    input::file-selector-button {
-        font-size: small;
-        font-weight: bold;
-        color: #1e2124;
-        padding: 0.2em;
-        border: thin solid grey;
-        border-radius: 100px;
-    }
-
-    input::file-selector-button:hover {
-        color: #7289da;
-    }
-
-    #save-button {
-        font-weight: bold;
-        font-size: medium;
-        color: whitesmoke;
-        background-color: #308132;
-        border-radius: 50px;
-        border: none;
-        text-align: center;
-        width: 100px;
-        height: 40px;
-    }
-
-    #save-button:active {
-        background-color: #205921;
-        color: rgb(172, 171, 171);
-    }
-
-    .path {
-        color: #7289da;
-    }
-
-    .browse-label {
-        font-weight: 500;
-    }
-
-    h3 {
-        color: whitesmoke;
-    }
-
-    #procurement,
-    #receipt {
-        background-color: #36393e;
-        border-radius: 20px;
-        padding: 20px 20px;
-        width: 560px;
-    }
-</style>
-<h1> Settings </h1><br>
+<link rel="stylesheet" href="../css/setting.css" />
+<h1>Settings</h1>
+<br />
 <p>
-    <label for="database-browse" class="browse-label">ไฟล์ Database</label><br>
-    <input id="database-browse" type="file"><br>
+    <label for="database-browse" class="browse-label">ไฟล์ Database</label><br />
+    <input id="database-browse" type="file" /><br />
     <label id="database-path" class="path"></label>
 </p>
-<h3> Procurement </h3>
+<h3>Procurement</h3>
 <div id="procurement">
     <p>
-        <label for="proControl1-browse" class="browse-label">สมุดคุม จัดซื้อ หจก.3พ</label><br>
-        <input id="proControl1-browse" type="file"><br>
+        <label for="proControl1-browse" class="browse-label">สมุดคุม จัดซื้อ หจก.3พ</label><br />
+        <input id="proControl1-browse" type="file" /><br />
         <label id="proControl1-path" class="path"></label>
     </p>
     <p>
-        <label for="proControl2-browse" class="browse-label">สมุดคุม จัดซื้อ บำเหน็จศึกษาภัณฑ์</label><br>
-        <input id="proControl2-browse" type="file"><br>
+        <label for="proControl2-browse" class="browse-label">สมุดคุม จัดซื้อ บำเหน็จศึกษาภัณฑ์</label><br />
+        <input id="proControl2-browse" type="file" /><br />
         <label id="proControl2-path" class="path"></label>
     </p>
     <p>
-        <label for="proForm1-browse" class="browse-label">Form จัดซื้อ หจก.3พ</label><br>
-        <input id="proForm1-browse" type="file"><br>
+        <label for="proForm1-browse" class="browse-label">Form จัดซื้อ หจก.3พ</label><br />
+        <input id="proForm1-browse" type="file" /><br />
         <label id="proForm1-path" class="path"></label>
     </p>
     <p>
-        <label for="proForm2-browse" class="browse-label">Form จัดซื้อ บำเหน็จศึกษาภัณฑ์</label><br>
-        <input id="proForm2-browse" type="file"><br>
+        <label for="proForm2-browse" class="browse-label">Form จัดซื้อ บำเหน็จศึกษาภัณฑ์</label><br />
+        <input id="proForm2-browse" type="file" /><br />
         <label id="proForm2-path" class="path"></label>
     </p>
 </div>
-<h3> Receipt </h3>
+<h3>Receipt</h3>
 <div id="receipt">
     <p>
-        <label for="recControl1a-browse" class="browse-label">สมุดคุม ใบเสร็จ หจก.3พ ปกติ</label><br>
-        <input id="recControl1a-browse" type="file"><br>
+        <label for="recControl1a-browse" class="browse-label">สมุดคุม ใบเสร็จ หจก.3พ ปกติ</label><br />
+        <input id="recControl1a-browse" type="file" /><br />
         <label id="recControl1a-path" class="path"></label>
     </p>
     <p>
-        <label for="recControl1b-browse" class="browse-label">สมุดคุม ใบเสร็จ หจก.3พ เลี่ยง</label><br>
-        <input id="recControl1b-browse" type="file"><br>
+        <label for="recControl1b-browse" class="browse-label">สมุดคุม ใบเสร็จ หจก.3พ เลี่ยง</label><br />
+        <input id="recControl1b-browse" type="file" /><br />
         <label id="recControl1b-path" class="path"></label>
     </p>
     <p>
-        <label for="recControl2a-browse" class="browse-label">สมุดคุม ใบเสร็จ บำเหน็จศึกษาภัณฑ์ ปกติ</label><br>
-        <input id="recControl2a-browse" type="file"><br>
+        <label for="recControl2a-browse" class="browse-label">สมุดคุม ใบเสร็จ บำเหน็จศึกษาภัณฑ์ ปกติ</label><br />
+        <input id="recControl2a-browse" type="file" /><br />
         <label id="recControl2a-path" class="path"></label>
     </p>
     <p>
-        <label for="recControl2b-browse" class="browse-label">สมุดคุม ใบเสร็จ บำเหน็จศึกษาภัณฑ์ เลี่ยง</label><br>
-        <input id="recControl2b-browse" type="file"><br>
+        <label for="recControl2b-browse" class="browse-label">สมุดคุม ใบเสร็จ บำเหน็จศึกษาภัณฑ์ เลี่ยง</label><br />
+        <input id="recControl2b-browse" type="file" /><br />
         <label id="recControl2b-path" class="path"></label>
     </p>
     <p>
-        <label for="recForm1a-browse" class="browse-label">Form ใบเสร็จ หจก.3พ ปกติ</label><br>
-        <input id="recForm1a-browse" type="file"><br>
+        <label for="recForm1a-browse" class="browse-label">Form ใบเสร็จ หจก.3พ ปกติ</label><br />
+        <input id="recForm1a-browse" type="file" /><br />
         <label id="recForm1a-path" class="path"></label>
     </p>
     <p>
-        <label for="recForm1b-browse" class="browse-label">Form ใบเสร็จ หจก.3พ เลี่ยง</label><br>
-        <input id="recForm1b-browse" type="file"><br>
+        <label for="recForm1b-browse" class="browse-label">Form ใบเสร็จ หจก.3พ เลี่ยง</label><br />
+        <input id="recForm1b-browse" type="file" /><br />
         <label id="recForm1b-path" class="path"></label>
     </p>
     <p>
-        <label for="recForm2a-browse" class="browse-label">Form ใบเสร็จ บำเหน็จศึกษาภัณฑ์ ปกติ</label><br>
-        <input id="recForm2a-browse" type="file"><br>
+        <label for="recForm2a-browse" class="browse-label">Form ใบเสร็จ บำเหน็จศึกษาภัณฑ์ ปกติ</label><br />
+        <input id="recForm2a-browse" type="file" /><br />
         <label id="recForm2a-path" class="path"></label>
     </p>
     <p>
-        <label for="recForm2b-browse" class="browse-label">Form ใบเสร็จ บำเหน็จศึกษาภัณฑ์ เลี่ยง</label><br>
-        <input id="recForm2b-browse" type="file"><br>
+        <label for="recForm2b-browse" class="browse-label">Form ใบเสร็จ บำเหน็จศึกษาภัณฑ์ เลี่ยง</label><br />
+        <input id="recForm2b-browse" type="file" /><br />
         <label id="recForm2b-path" class="path"></label>
     </p>
 </div>
-<br>
-<button id="save-button"> Save </button>
-<br><br>
-<script>
-    // load paths
-    var paths = api.getEssentialPath()
-    if (paths == -1)
-        alert("error reading setting file, \nplease contact developer")
-    else {
-        for (var prop in paths) {
-            let val = paths[prop]
-            document.getElementById(prop + "-path").innerHTML = (val == null) ? "----None----" : val
-        }
-    }
-    // save
-    document.getElementById("save-button").onclick = () => {
-        var paths = Object();
-        ["database", "proControl1", "proControl2", "proForm1", "proForm2", "recControl1a", "recControl1b", "recControl2a", "recControl2b", "recForm1a", "recForm1b", "recForm2a", "recForm2b"].forEach(prop => {
-            try {
-                let val = document.getElementById(prop + "-browse").files[0].path
-                paths[prop] = val
-            } catch {
-                let val = document.getElementById(prop + "-path").textContent
-                paths[prop] = (val == "----None----") ? null : val
-            }
-
-        });
-        console.log(paths)
-        api.saveEssentialPath(paths)
-        alert("Settings Saved")
-        // refresh page
-        $("#link1").click()
-    }
-</script>
+<br />
+<button id="save-button">Save</button>
+<br /><br />
+<script src="../js/setting.js"></script>

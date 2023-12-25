@@ -1,0 +1,49 @@
+input::file-selector-button {
+    font-size: small;
+    font-weight: bold;
+    color: #1e2124;
+    padding: 0.2em;
+    border: thin solid grey;
+    border-radius: 100px;
+}
+
+input::file-selector-button:hover {
+    color: #7289da;
+}
+
+#save-button {
+    font-weight: bold;
+    font-size: medium;
+    color: whitesmoke;
+    background-color: #308132;
+    border-radius: 50px;
+    border: none;
+    text-align: center;
+    width: 100px;
+    height: 40px;
+}
+
+#save-button:active {
+    background-color: #205921;
+    color: rgb(172, 171, 171);
+}
+
+.path {
+    color: #7289da;
+}
+
+.browse-label {
+    font-weight: 500;
+}
+
+h3 {
+    color: whitesmoke;
+}
+
+#procurement,
+#receipt {
+    background-color: #36393e;
+    border-radius: 20px;
+    padding: 20px 20px;
+    width: 560px;
+}
