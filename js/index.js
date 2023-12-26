@@ -33,15 +33,25 @@ $("#content").load("welcome.html");
 
 async function loadDB() {
     // reuse in rec and pro script
-    let result = await api.loadDB();
-    if (result == -1) {
-        api.openErrorBox("Index: " + loadDB.name, "error reading setting file, please contact developer");
-        return;
-    } else if (result == -2) {
-        api.openErrorBox("Index: " + loadDB.name, "error loading database file\n make sure you put in the right path");
-        $("#link1").click();
-        return;
-    } else if (result == null) {
+    try {
+        var result = await api.loadDB();
+    } catch (err) {
+        console.log(err);
+        if (err.cause == "cannot read setting.json") {
+            api.openErrorBox("Index: " + loadDB.name, "error reading setting file, please contact developer");
+            return;
+        }
+        if (err.cause == "error loading database file") {
+            api.openErrorBox(
+                "Index: " + loadDB.name,
+                "error loading database file\nmake sure you put in the right path"
+            );
+            $("#link1").click();
+            return;
+        }
+    }
+
+    if (result == null) {
         api.openErrorBox("Index: " + loadDB.name, "please set path to database in Setting");
         $("#link1").click();
         return;

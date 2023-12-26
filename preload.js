@@ -22,7 +22,7 @@ function getEssentialPath() {
             let val = JSON.parse(fs.readFileSync(filename));
             return val;
         } catch (err) {
-            return -1;
+            throw Error("api.getEssentialPath failed", { cause: "cannot read setting.json" });
         }
     } else {
         // Create file
@@ -55,9 +55,12 @@ function saveEssentialPath(obj) {
 }
 
 async function loadDB() {
-    let paths = getEssentialPath();
+    try {
+        var paths = getEssentialPath();
+    } catch (err) {
+        throw Error("api.loadDB failed" + " <= " + err.message, { cause: err.cause });
+    }
     if (paths.database == null) return null;
-    else if (paths == -1) return -1;
     console.log("loading database file...");
     try {
         var workbook = new excel.Workbook();
@@ -79,11 +82,10 @@ async function loadDB() {
                 head: row.getCell(9).value,
             });
         }
+        return arr;
     } catch (err) {
-        console.log(err);
-        return -2;
+        throw Error("api.loadDB failed", { cause: "error loading database file" });
     }
-    return arr;
 }
 
 async function getControlNumber(filePath) {
@@ -112,8 +114,7 @@ async function getControlNumber(filePath) {
         }
         return { next: next, emptyRow: emptyRow };
     } catch (err) {
-        console.log(err);
-        return null;
+        throw Error("api.getControlNumber failed", { cause: "error reading control file" });
     }
 }
 
@@ -123,13 +124,12 @@ async function saveControl(filePath, emptyRow, number, detail, money, date) {
         workbook = await workbook.xlsx.readFile(filePath);
         var ws = workbook.worksheets[0];
     } catch (err) {
-        console.log(err);
-        return -1;
+        throw Error("api.saveControl failed", { cause: "error reading control file" });
     }
     let row = ws.getRow(emptyRow);
     // check if that row is empty
     for (let i = 1; i <= 4; i++) {
-        if (row.getCell(i).value != null) return -2;
+        if (row.getCell(i).value != null) throw Error("api.saveControl failed", { cause: "The row is not empty" });
     }
     row.getCell(1).value = parseInt(number);
     row.getCell(2).value = detail;
@@ -161,14 +161,27 @@ async function createReceipt({
     money,
 }) {
     // save control
-    let controlWorkbook = await saveControl(receiptControl, receiptEmptyRow, receiptNumber, detail, money, receiptDate);
-    if (controlWorkbook == -1) {
-        api.openErrorBox("preload: " + createReceipt.name, "error loading control file");
-        return;
-    } else if (controlWorkbook == -2) {
-        api.openErrorBox("preload: " + createReceipt.name, "The row is not empty");
-        return;
+    try {
+        var controlWorkbook = await saveControl(
+            receiptControl,
+            receiptEmptyRow,
+            receiptNumber,
+            detail,
+            money,
+            receiptDate
+        );
+    } catch (err) {
+        console.log(err);
+        if (err.cause == "error reading control file") {
+            throw Error("createReceipt failed" + " <= " + err.message, { cause: err.cause });
+        }
+        if (err.cause == "The row is not empty") {
+            throw Error("createReceipt failed" + " <= " + err.message, { cause: err.cause });
+        }
     }
-    controlWorkbook.xlsx.writeFile(receiptControl);
+    // controlWorkbook.xlsx.writeFile(receiptControl); // save when other operation also complete
     // write form
+    // TODO....
+
+    // 2. write form code
 }

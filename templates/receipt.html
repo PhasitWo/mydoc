@@ -2,7 +2,7 @@
 <div id="receipt-container">
     <h1>Receipt</h1>
     <br />
-    <form>
+    <form id="receipt-form" onsubmit="createClicked(event)">
         <p>
             <label for="file-name">File Name</label><br />
             <input id="file-name" type="text" required />
@@ -83,7 +83,7 @@
         </p>
         <p>
             <br />
-            <button id="create" onclick="createClicked()">Create</button>
+            <button id="create">Create</button>
         </p>
     </form>
 </div>

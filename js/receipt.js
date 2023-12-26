@@ -1,20 +1,25 @@
 // setup autocomplete
 setupAutocomplete();
 // essential paths
-var essentialPaths = api.getEssentialPath();
-console.log("loading essential paths...");
-if (essentialPaths == -1) {
+try {
+    var essentialPaths = api.getEssentialPath();
+    console.log("essential paths loaded");
+} catch (err) {
+    console.log(err);
     api.openErrorBox("Receipt: " + "main", "error reading setting file, please contact developer");
     $("#content").load("welcome.html");
 }
+
 async function setupAutocomplete() {
     if (database == null) database = await loadDB(); // loadDB after user set path to DB
-    database.forEach((school) => {
-        datalist = document.getElementById("gov-list");
-        option = document.createElement("option");
-        option.innerHTML = school.name;
-        datalist.appendChild(option);
-    });
+    if (database != null) {
+        database.forEach((school) => {
+            datalist = document.getElementById("gov-list");
+            option = document.createElement("option");
+            option.innerHTML = school.name;
+            datalist.appendChild(option);
+        });
+    }
 }
 
 async function getDir() {
@@ -37,31 +42,6 @@ function loadAddress() {
     document.getElementById("address").readOnly = false;
     document.getElementById("gov-name-status").textContent = "not found";
     document.getElementById("gov-name-status").style.color = "red";
-}
-
-function createClicked() {
-    if (!validateForm()) {
-        api.openErrorBox("Receipt: " + createClicked.name, "please fill in all essential fields");
-        return;
-    }
-    let out = {
-        fileName: document.getElementById("file-name").value,
-        saveAt: document.getElementById("save-at-path").textContent,
-        receiptNumber: document.getElementById("receipt-number").value,
-        receiptEmptyRow: document.getElementById("receipt-number").dataset.emptyRow,
-        receiptDate: document.getElementById("receipt-date").value,
-        receiptForm: essentialPaths[`recForm${document.getElementById("shop").value}`],
-        receiptControl: essentialPaths[`recControl${document.getElementById("shop").value}`],
-        govName: document.getElementById("gov-name").value,
-        address: document.getElementById("address").value,
-        detail: document.getElementById("detail").value,
-        deliveryNumber: document.getElementById("delivery-number").value,
-        deliveryDate: document.getElementById("delivery-date").value,
-        money: document.getElementById("money").value
-    };
-    api.createReceipt(out);
-    console.log(out);
-    $("#link3").click();
 }
 
 function validateForm() {
@@ -101,8 +81,10 @@ async function loadControlNumber() {
         document.getElementById("receipt-number").dataset.emptyRow = "";
         return;
     }
-    let result = await api.getControlNumber(filePath);
-    if (result == null) {
+    try {
+        var result = await api.getControlNumber(filePath);
+    } catch (err) {
+        console.log(err);
         api.openErrorBox(
             "Receipt: " + loadControlNumber.name,
             "error loading control number, please contact developer"
@@ -113,7 +95,28 @@ async function loadControlNumber() {
     document.getElementById("receipt-number").dataset.emptyRow = result.emptyRow;
 }
 
-function test() {
-    loadingStart("Create Button is clicked!!!");
-    setTimeout(loadingEnd, 1500);
+function createClicked(event) {
+    event.preventDefault(); // prevent reloading after submit
+    if (!validateForm()) {
+        api.openErrorBox("Receipt: " + createClicked.name, "please fill in all essential fields");
+        return;
+    }
+    let out = {
+        fileName: document.getElementById("file-name").value,
+        saveAt: document.getElementById("save-at-path").textContent,
+        receiptNumber: document.getElementById("receipt-number").value,
+        receiptEmptyRow: document.getElementById("receipt-number").dataset.emptyRow,
+        receiptDate: document.getElementById("receipt-date").value,
+        receiptForm: essentialPaths[`recForm${document.getElementById("shop").value}`],
+        receiptControl: essentialPaths[`recControl${document.getElementById("shop").value}`],
+        govName: document.getElementById("gov-name").value,
+        address: document.getElementById("address").value,
+        detail: document.getElementById("detail").value,
+        deliveryNumber: document.getElementById("delivery-number").value,
+        deliveryDate: document.getElementById("delivery-date").value,
+        money: document.getElementById("money").value,
+    };
+    api.createReceipt(out);
+    console.log(out);
+    $("#link3").click();
 }

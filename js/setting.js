@@ -1,7 +1,11 @@
 // load paths
-var paths = api.getEssentialPath();
-if (paths == -1) api.openErrorBox("Setting: " + "main", "error reading setting file, please contact developer");
-else {
+try {
+    var paths = api.getEssentialPath();
+} catch (err) {
+    console.log(err);
+    api.openErrorBox("Setting: " + "main", "error reading setting file, please contact developer");
+}
+if (paths != null) {
     for (var prop in paths) {
         let val = paths[prop];
         document.getElementById(prop + "-path").innerHTML = val == null ? "----None----" : val;
