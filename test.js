@@ -1,5 +1,5 @@
 const excel = require("exceljs");
-const { write } = require("fs");
+const fs  = require("fs");
 
 async function writeControl(filePath, emptyRow, number, detail, money, date) {
     try {
@@ -28,25 +28,33 @@ async function writeControl(filePath, emptyRow, number, detail, money, date) {
     return workbook; // not save yet
 }
 
-async function writeForm(args, keyword) {
+async function writeForm(formPath, input, keyword) {
     try {
         var workbook = new excel.Workbook();
-        workbook = await workbook.xlsx.readFile(receiptForm);
+        workbook = await workbook.xlsx.readFile(formPath);
         var ws = workbook.worksheets[0];
     } catch (err) {
-        throw Error("api.createReceipt failed", { cause: "error reading form file" });
+        throw Error("api.writeForm failed", { cause: "error reading form file" });
     }
-    for (let i = 1; i <= ws.rowCount; i++) {
-        for (let j = 1; j <= ws.columnCount; j++) {
-            let cell = ws.getCell(i, j);
-            let value = cell.value;
-            if (value == null) continue;
-            for (let key in keyword) {
-                if (value.includes(keyword[key])) value = value.replaceAll(keyword[key], args[key]);
+    try {
+        for (let i = 1; i <= ws.rowCount; i++) {
+            for (let j = 1; j <= ws.columnCount; j++) {
+                let cell = ws.getCell(i, j);
+                let value = cell.value;
+                if (typeof value != 'string') continue;
+                for (let prop in keyword) {
+                    let replacement = input[prop];
+                    if (replacement == "") replacement = keyword[prop].default;
+                    if (value.includes(keyword[prop].key)) value = value.replaceAll(keyword[prop].key, replacement);
+                }
+                cell.value = value;
             }
-            cell.value = value;
         }
+    } catch (err) {
+        console.log(err)
+        throw Error("api.writeForm failed", { cause: "error writing form file" });
     }
+    return workbook;
 }
 
 async function createReceipt({
@@ -64,21 +72,6 @@ async function createReceipt({
     deliveryDate,
     money,
 }) {
-    var args = {
-        fileName: fileName,
-        saveAt: saveAt,
-        receiptNumber: receiptNumber,
-        receiptEmptyRow: receiptEmptyRow,
-        receiptDate: receiptDate,
-        receiptForm: receiptForm,
-        receiptControl: receiptControl,
-        govName: govName,
-        address: address,
-        detail: detail,
-        deliveryNumber: deliveryNumber,
-        deliveryDate: deliveryDate,
-        money: money,
-    };
     // save control
     try {
         var controlWorkbook = await writeControl(
@@ -99,7 +92,7 @@ async function createReceipt({
         }
     }
     // controlWorkbook.xlsx.writeFile(receiptControl); // save when other operation also complete
-    // write form
+    // load keyword
     var keyword;
     const filename = "receipt-keyword.json";
     if (fs.existsSync(filename)) {
@@ -112,20 +105,41 @@ async function createReceipt({
     } else {
         // Create file
         let obj = {
-            receiptNumber: "BILLNUMBER",
-            receiptDate: "BILLDATE",
-            govName: "NAME",
-            address: "ADDRESS2",
-            detail: "DETAIL",
-            deliveryNumber: "DELIVERYNUMBER",
-            deliveryDate: "DELIVERYDATE",
-            money: "MONEY",
+            receiptNumber: { key: "BILLNUMBER", default: "" },
+            receiptDate: { key: "BILLDATE", default: ".".repeat(35) },
+            govName: { key: "NAME", default: "" },
+            address: { key: "ADDRESS2", default: ".".repeat(150) },
+            detail: { key: "DETAIL", default: "" },
+            deliveryNumber: { key: "DELIVERYNUMBER", default: "" },
+            deliveryDate: { key: "DELIVERYDATE", default: "" },
+            money: { key: "MONEY", default: "" },
         };
         let json = JSON.stringify(obj);
         fs.writeFile(filename, json, (err) => console.log("write file error: " + err));
         keyword = obj;
     }
-    writeForm()
+    let input = {
+        receiptNumber: receiptNumber,
+        receiptDate: receiptDate,
+        govName: govName,
+        address: address,
+        detail: detail,
+        deliveryNumber: deliveryNumber,
+        deliveryDate: deliveryDate,
+        money: money,
+    };
+    // write form
+    try {
+        var formWorkbook = await writeForm(receiptForm, input, keyword);
+    } catch (err) {
+        if (err.cause == "error reading form file")
+            throw Error("createReceipt failed" + " <= " + err.message, { cause: err.cause });
+        if (err.cause == "error writing form file")
+            throw Error("createReceipt failed" + " <= " + err.message, { cause: err.cause });
+    }
+    // both writeControl and writeForm complete
+    controlWorkbook.xlsx.writeFile(receiptControl)
+    formWorkbook.xlsx.writeFile(saveAt+"/"+fileName+".xlsx")
 }
 
 // main
@@ -134,18 +148,15 @@ let mockup = {
     fileName: "test_from_mockup",
     saveAt: "/Users/phasit/Desktop/ElectronProject/mydoc",
     receiptNumber: 888,
-    receiptEmptyRow: 15,
+    receiptEmptyRow: 17,
     receiptDate: "",
     receiptForm: "sample.xlsx",
     receiptControl: "control.xlsx",
     govName: "bindai school",
-    address: "Mars, Solar System",
+    address: "",
     detail: "this is the detail",
     deliveryNumber: "888",
     deliveryDate: "",
     money: "1234",
 };
-// createReceipt(mockup);
-
-let o = { a: 1, b: 2 };
-for (let key in o) console.log(o[key]);
+createReceipt(mockup);

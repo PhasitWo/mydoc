@@ -72,6 +72,7 @@
 html {
     font-family: "Nunito", "Kanit";
     color: #bdbdbd;
+    max-width: 100%;
 }
 
 body {
