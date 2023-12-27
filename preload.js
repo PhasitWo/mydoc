@@ -8,9 +8,7 @@ contextBridge.exposeInMainWorld("api", {
     getEssentialPath: getEssentialPath,
     saveEssentialPath: saveEssentialPath,
     getControlNumber: getControlNumber,
-    saveControl: saveControl,
-    createReceipt,
-    createReceipt,
+    createReceipt: createReceipt,
     openDialog: () => ipcRenderer.invoke("openDialog"),
     openErrorBox: (title, content) => ipcRenderer.invoke("openErrorBox", title, content),
 });
@@ -42,7 +40,7 @@ function getEssentialPath() {
             recForm2b: null,
         };
         let json = JSON.stringify(obj);
-        fs.writeFile(filename, json, (err) => console.log("error: " + err));
+        fs.writeFile(filename, json, (err) => console.log("write file error: " + err));
         return obj;
     }
 }
@@ -51,7 +49,7 @@ function saveEssentialPath(obj) {
     // Create file
     const filename = "setting.json";
     let json = JSON.stringify(obj);
-    fs.writeFile(filename, json, (err) => console.log("error: " + err));
+    fs.writeFile(filename, json, (err) => console.log("write file error: " + err));
 }
 
 async function loadDB() {
@@ -118,18 +116,18 @@ async function getControlNumber(filePath) {
     }
 }
 
-async function saveControl(filePath, emptyRow, number, detail, money, date) {
+async function writeControl(filePath, emptyRow, number, detail, money, date) {
     try {
         var workbook = new excel.Workbook();
         workbook = await workbook.xlsx.readFile(filePath);
         var ws = workbook.worksheets[0];
     } catch (err) {
-        throw Error("api.saveControl failed", { cause: "error reading control file" });
+        throw Error("api.writeControl failed", { cause: "error reading control file" });
     }
     let row = ws.getRow(emptyRow);
     // check if that row is empty
     for (let i = 1; i <= 4; i++) {
-        if (row.getCell(i).value != null) throw Error("api.saveControl failed", { cause: "The row is not empty" });
+        if (row.getCell(i).value != null) throw Error("api.writeControl failed", { cause: "The row is not empty" });
     }
     row.getCell(1).value = parseInt(number);
     row.getCell(2).value = detail;
@@ -162,7 +160,7 @@ async function createReceipt({
 }) {
     // save control
     try {
-        var controlWorkbook = await saveControl(
+        var controlWorkbook = await writeControl(
             receiptControl,
             receiptEmptyRow,
             receiptNumber,
