@@ -95,13 +95,19 @@ async function loadControlNumber() {
     document.getElementById("receipt-number").dataset.emptyRow = result.emptyRow;
 }
 
+function clearForm() {
+    document.getElementById("save-at-path").textContent = "";
+    document.getElementById("gov-name-status").textContent = "";
+    document.getElementById("receipt-form").reset()
+}
+
 async function createClicked(event) {
-    // event.preventDefault(); // prevent reloading after submit
-    // if (!validateForm()) {
-    //     api.openErrorBox("Receipt: " + createClicked.name, "please fill in all essential fields");
-    //     return;
-    // }
-    let out = {
+    event.preventDefault(); // prevent reloading after submit
+    if (!validateForm()) {
+        api.openErrorBox("Receipt: " + createClicked.name, "please fill in all essential fields");
+        return;
+    }
+    let userInput = {
         fileName: document.getElementById("file-name").value,
         saveAt: document.getElementById("save-at-path").textContent,
         receiptNumber: document.getElementById("receipt-number").value,
@@ -116,57 +122,44 @@ async function createClicked(event) {
         deliveryDate: document.getElementById("delivery-date").value,
         money: document.getElementById("money").value,
     };
-
-    let mockup = {
-        fileName: "test_from_mockup3",
-        saveAt: "./",
-        receiptNumber: 324,
-        receiptEmptyRow: 4,
-        receiptDate: "2023-12-28",
-        receiptForm: "sample.xlsx",
-        receiptControl: "control.xlsx",
-        govName: "bindai school",
-        address: "",
-        detail: "this is the detail",
-        deliveryNumber: "123",
-        deliveryDate: "",
-        money: 155,
-    };
-
-    console.log(out);
+    console.log(userInput);
     loadingStart("Creating Receipt!");
     try {
-        await api.createReceipt(mockup);
+        await api.createReceipt(userInput);
     } catch (err) {
-        console.log(err.cause);
-        if (err.cause == "control file is currently opened") {
-            api.openErrorBox("Receipt: " + createClicked.name, err.cause + ",\nplease close control file");
+        loadingEnd();
+        console.log(err);
+        let cause = err.message.split(" || ")[1]
+        if (cause == "control file is currently opened") {
+            api.openErrorBox("Receipt: " + createClicked.name, cause + ",\nplease close control file");
             return;
         }
-        if (err.cause == "That file already exists") {
-            api.openErrorBox("Receipt: " + createClicked.name, err.cause + ",\nplease change file name");
+        if (cause == "That file already exists") {
+            api.openErrorBox("Receipt: " + createClicked.name, cause + ",\nplease change file name");
             return;
         }
 
-        if (err.cause == "error reading receipt-keyword.json") {
+        if (cause == "error reading receipt-keyword.json") {
             api.openErrorBox(
                 "Receipt: " + createClicked.name,
-                err.cause + ",\nplease make sure 'receipt-keyword.json' is not currently opened"
+                cause + ",\nplease make sure 'receipt-keyword.json' is not currently opened"
             );
             return;
         }
         if (
-            err.cause == "The row is not empty" ||
-            err.cause == "error reading control file" ||
-            err.cause == "error reading form file" ||
-            err.cause == "error writing form file"
+            cause == "The row is not empty" ||
+            cause == "error reading control file" ||
+            cause == "error reading form file" ||
+            cause == "error writing form file"
         ) {
-            api.openErrorBox("Receipt: " + createClicked.name, err.cause + ",\nplease contact developer");
+            api.openErrorBox("Receipt: " + createClicked.name, cause + ",\nplease contact developer");
             return;
         }
-    } finally {
-        loadingEnd();
-    }
-
-    // $("#link3").click();
+    } 
+    setTimeout(() => {
+        loadingEnd()
+        clearForm()
+        api.openPath(userInput.saveAt + "/" + userInput.fileName + ".xlsx");
+    }, 1500)
+    
 }

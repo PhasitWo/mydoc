@@ -1,4 +1,4 @@
-const { contextBridge, ipcRenderer } = require("electron");
+const { contextBridge, ipcRenderer, shell } = require("electron");
 var fs = require("fs");
 var excel = require("exceljs");
 
@@ -11,7 +11,7 @@ contextBridge.exposeInMainWorld("api", {
     createReceipt: createReceipt,
     openDialog: () => ipcRenderer.invoke("openDialog"),
     openErrorBox: (title, content) => ipcRenderer.invoke("openErrorBox", title, content),
-    testError: testError
+    openPath: (filePath) => shell.openPath(filePath)
 });
 
 function getEssentialPath() {
@@ -196,10 +196,11 @@ async function createReceipt({
 }) {
     // check both file
     fs.open("control.xlsx", "r+", (err, data) => {
-        if (err != null && err.code == "EBUSY") throw Error("api.createReceipt failed", { cause: "control file is currently opened" });
+        if (err != null && err.code == "EBUSY")
+            throw Error("api.createReceipt failed || control file is currently opened");
     });
     if (fs.existsSync(saveAt + "/" + fileName + ".xlsx"))
-        throw Error("api.createReceipt failed", { cause: "That file already exists" });
+        throw Error("api.createReceipt failed || That file already exists");
     // save control
     try {
         var controlWorkbook = await writeControl(
@@ -212,12 +213,8 @@ async function createReceipt({
         );
     } catch (err) {
         console.log(err);
-        if (err.cause == "error reading control file") {
-            throw Error("api.createReceipt failed" + " <= " + err.message, { cause: err.cause });
-        }
-        if (err.cause == "The row is not empty") {
-            throw Error("api.createReceipt failed" + " <= " + err.message, { cause: err.cause });
-        }
+        if (err.cause == "error reading control file" || err.cause == "The row is not empty")
+            throw Error("api.createReceipt failed" + " <= " + err.message + " || " + err.cause);
     }
     // load keyword
     var keyword;
@@ -228,7 +225,7 @@ async function createReceipt({
             keyword = obj;
         } catch (err) {
             console.log(err);
-            throw Error("api.createReceipt failed", { cause: "error reading receipt-keyword.json" });
+            throw Error("api.createReceipt failed || error reading receipt-keyword.json");
         }
     } else {
         // Create file
@@ -247,36 +244,37 @@ async function createReceipt({
         keyword = obj;
     }
     // write form
+    // convert to Thai date
     let date = new Date(receiptDate);
-    const thaiDate = date.toLocaleDateString("th-TH", {
+    const ReceiptThaiDate = date.toLocaleDateString("th-TH", {
         year: "numeric",
         month: "long",
         day: "numeric",
     });
+    date = new Date(deliveryDate);
+    const DeliveryThaiDate = date.toLocaleDateString("th-TH", {
+        year: "2-digit",
+        month: "short",
+        day: "numeric",
+    });
     let input = {
         receiptNumber: receiptNumber,
-        receiptDate: thaiDate,
+        receiptDate: ReceiptThaiDate,
         govName: govName,
         address: address,
         detail: detail,
         deliveryNumber: deliveryNumber,
-        deliveryDate: deliveryDate,
+        deliveryDate: DeliveryThaiDate,
         money: money,
     };
     try {
         var formWorkbook = await writeForm(receiptForm, input, keyword);
     } catch (err) {
-        console.log(err)
-        if (err.cause == "error reading form file")
-            throw Error("api.createReceipt failed" + " <= " + err.message, { cause: err.cause });
-        if (err.cause == "error writing form file")
-            throw Error("api.createReceipt failed" + " <= " + err.message, { cause: err.cause });
+        console.log(err);
+        if (err.cause == "error reading form file" || err.cause == "error writing form file")
+            throw Error("api.createReceipt failed" + " <= " + err.message + " || " + err.cause);
     }
     // both writeControl and writeForm complete
     controlWorkbook.xlsx.writeFile(receiptControl);
     formWorkbook.xlsx.writeFile(saveAt + "/" + fileName + ".xlsx");
-}
-
-function testError() {
-    throw Error("this is an error", {cause: "123"})
 }
