@@ -7,7 +7,7 @@
 #gov-name,
 #file-name,
 #address {
-    width: 300px;
+    width: 400px;
 }
 
 #receipt-container {
@@ -21,6 +21,10 @@
 
 .vertical label {
     display: block;
+}
+
+input {
+    font-size: 18px;
 }
 
 input[type="text"],

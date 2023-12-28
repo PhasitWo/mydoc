@@ -176,3 +176,26 @@ h1 {
     .navbar-link li:nth-child(3):focus-within~.active {
       top: 68.66%;
     } */
+
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #282b30; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #1e2124; 
+  height: 20%;
+  border-radius: 50px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}

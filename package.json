@@ -1,26 +1,30 @@
 {
-  "name": "mydoc",
-  "version": "1.0.0",
-  "description": "bill and doc",
-  "main": "main.js",
-  "scripts": {
-    "start": "electron ."
-  },
-  "author": "phasitWo",
-  "license": "ISC",
-  "devDependencies": {
-    "@electron-forge/cli": "^7.2.0",
-    "@electron-forge/maker-deb": "^7.2.0",
-    "@electron-forge/maker-rpm": "^7.2.0",
-    "@electron-forge/maker-squirrel": "^7.2.0",
-    "@electron-forge/maker-zip": "^7.2.0",
-    "@electron-forge/plugin-auto-unpack-natives": "^7.2.0",
-    "electron": "^28.0.0",
-    "exceljs": "^4.4.0",
-    "fs": "^0.0.1-security"
-  },
-  "dependencies": {
-    "@electron/remote": "^2.1.1",
-    "electron-squirrel-startup": "^1.0.0"
-  }
+    "name": "mydoc",
+    "version": "1.0.0",
+    "description": "bill and doc",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron-forge start",
+        "package": "electron-forge package",
+        "make": "electron-forge make"
+    },
+    "author": "phasitWo",
+    "license": "ISC",
+    "devDependencies": {
+        "@electron-forge/cli": "^7.2.0",
+        "@electron-forge/maker-deb": "^7.2.0",
+        "@electron-forge/maker-rpm": "^7.2.0",
+        "@electron-forge/maker-squirrel": "^7.2.0",
+        "@electron-forge/maker-zip": "^7.2.0",
+        "@electron-forge/plugin-auto-unpack-natives": "^7.2.0",
+        "electron": "^28.0.0",
+        "exceljs": "^4.4.0",
+        "fs": "^0.0.1-security"
+    },
+    "dependencies": {
+        "@electron/remote": "^2.1.1",
+        "electron-squirrel-startup": "^1.0.0",
+        "exceljs": "^4.4.0",
+        "fs": "^0.0.1-security"
+    }
 }
