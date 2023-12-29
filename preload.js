@@ -11,7 +11,7 @@ contextBridge.exposeInMainWorld("api", {
     createReceipt: createReceipt,
     openDialog: () => ipcRenderer.invoke("openDialog"),
     openErrorBox: (title, content) => ipcRenderer.invoke("openErrorBox", title, content),
-    openPath: (filePath) => shell.openPath(filePath)
+    openPath: (filePath) => shell.openPath(filePath),
 });
 
 function getEssentialPath() {
@@ -122,7 +122,7 @@ function isNumeric(str) {
     return !isNaN(str) && !isNaN(parseFloat(str));
 }
 
-async function writeControl(filePath, emptyRow, number, detail, money, date) {
+async function writeControl(filePath, emptyRow, number, goveName, detail, money, date) {
     try {
         var workbook = new excel.Workbook();
         workbook = await workbook.xlsx.readFile(filePath);
@@ -136,8 +136,9 @@ async function writeControl(filePath, emptyRow, number, detail, money, date) {
         if (row.getCell(i).value != null) throw Error("api.writeControl failed", { cause: "The row is not empty" });
     }
     row.getCell(1).value = parseInt(number);
-    row.getCell(2).value = detail;
-    row.getCell(3).value = parseFloat(money);
+    row.getCell(2).value = goveName;
+    row.getCell(3).value = detail;
+    row.getCell(4).value = parseFloat(money);
     if (date == "") {
         var today = new Date();
         var dd = String(today.getDate()).padStart(2, "0");
@@ -145,7 +146,7 @@ async function writeControl(filePath, emptyRow, number, detail, money, date) {
         var yyyy = today.getFullYear();
         date = "Created on " + dd + "-" + mm + "-" + yyyy;
     }
-    row.getCell(4).value = date;
+    row.getCell(5).value = date;
     return workbook; // not save yet
 }
 
@@ -199,7 +200,7 @@ async function createReceipt({
         if (err != null && err.code == "EBUSY")
             throw Error("api.createReceipt failed || control file is currently opened");
     });
-    if (fs.existsSync(saveAt + "/" + fileName + ".xlsx"))
+    if (fs.existsSync(saveAt + "\\" + fileName + ".xlsx"))
         throw Error("api.createReceipt failed || That file already exists");
     // save control
     try {
@@ -207,6 +208,7 @@ async function createReceipt({
             receiptControl,
             receiptEmptyRow,
             receiptNumber,
+            govName,
             detail,
             money,
             receiptDate
@@ -245,26 +247,30 @@ async function createReceipt({
     }
     // write form
     // convert to Thai date
-    let date = new Date(receiptDate);
-    const ReceiptThaiDate = date.toLocaleDateString("th-TH", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-    });
-    date = new Date(deliveryDate);
-    const DeliveryThaiDate = date.toLocaleDateString("th-TH", {
-        year: "2-digit",
-        month: "short",
-        day: "numeric",
-    });
+    if (receiptDate != "") {
+        let date = new Date(receiptDate);
+        receiptDate = date.toLocaleDateString("th-TH", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        });
+    }
+    if (deliveryDate != "") {
+        date = new Date(deliveryDate);
+        deliveryDate = date.toLocaleDateString("th-TH", {
+            year: "2-digit",
+            month: "short",
+            day: "numeric",
+        });
+    }
     let input = {
         receiptNumber: receiptNumber,
-        receiptDate: ReceiptThaiDate,
+        receiptDate: receiptDate,
         govName: govName,
         address: address,
         detail: detail,
         deliveryNumber: deliveryNumber,
-        deliveryDate: DeliveryThaiDate,
+        deliveryDate: deliveryDate,
         money: money,
     };
     try {

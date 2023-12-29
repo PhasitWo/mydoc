@@ -3,7 +3,7 @@ const path = require("node:path");
 
 const createWindow = () => {
     const win = new BrowserWindow({
-        width: 800,
+        width: 820,
         height: 750,
         webPreferences: {
             preload: path.join(__dirname, "preload.js"),
@@ -21,6 +21,7 @@ const createWindow = () => {
         dialog.showErrorBox(title, content);
         return;
     });
+    // win.removeMenu();
     win.loadFile("./templates/index.html");
 };
 
