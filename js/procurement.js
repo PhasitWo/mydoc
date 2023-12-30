@@ -6,7 +6,7 @@ try {
     console.log("essential paths loaded");
 } catch (err) {
     console.log(err);
-    api.openErrorBox("Receipt: " + "main", "error reading setting file, please contact developer");
+    api.openErrorBox("Procurement: " + "main", "error reading setting file, please contact developer");
     $("#content").load("welcome.html");
 }
 

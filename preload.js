@@ -196,7 +196,7 @@ async function createReceipt({
     money,
 }) {
     // check both file
-    fs.open("control.xlsx", "r+", (err, data) => {
+    fs.open(receiptControl, "r+", (err, data) => {
         if (err != null && err.code == "EBUSY")
             throw Error("api.createReceipt failed || control file is currently opened");
     });
@@ -283,4 +283,76 @@ async function createReceipt({
     // both writeControl and writeForm complete
     controlWorkbook.xlsx.writeFile(receiptControl);
     formWorkbook.xlsx.writeFile(saveAt + "/" + fileName + ".xlsx");
+}
+
+async function createProcurement({
+    fileName,
+    saveAt,
+    deliveryNumber,
+    deliveryEmptyRow,
+    deliveryDate,
+    procurementForm,
+    procurementControl,
+    buy,
+    project,
+    money,
+    govName,
+    address,
+    person1,
+    person2,
+    person3,
+    person4,
+    person5,
+    head
+}) {
+    // check both file
+    fs.open(procurementControl, "r+", (err, data) => {
+        if (err != null && err.code == "EBUSY")
+            throw Error("api.createProcurement failed || control file is currently opened");
+    });
+    if (fs.existsSync(saveAt + "\\" + fileName + ".xlsx"))
+        throw Error("api.createProcurement failed || That file already exists");
+    // save control
+    try {
+        var controlWorkbook = await writeControl(
+            procurementControl,
+            deliveryEmptyRow,
+            deliveryNumber,
+            govName,
+            buy,
+            money,
+            deliveryDate
+        );
+    } catch (err) {
+        console.log(err);
+        if (err.cause == "error reading control file" || err.cause == "The row is not empty")
+            throw Error("api.createProcurement failed" + " <= " + err.message + " || " + err.cause);
+    }
+    // load keyword
+    var keyword;
+    const filename = "procurement-keyword.json";
+    if (fs.existsSync(filename)) {
+        try {
+            let obj = JSON.parse(fs.readFileSync(filename));
+            keyword = obj;
+        } catch (err) {
+            console.log(err);
+            throw Error("api.createProcurement failed || error reading procurement-keyword.json");
+        }
+    } else {
+        // Create file
+        // let obj = {
+        //     receiptNumber: { key: "BILLNUMBER", default: "" },
+        //     receiptDate: { key: "BILLDATE", default: ".".repeat(35) },
+        //     govName: { key: "NAME", default: "" },
+        //     address: { key: "ADDRESS2", default: ".".repeat(150) },
+        //     detail: { key: "DETAIL", default: "" },
+        //     deliveryNumber: { key: "DELIVERYNUMBER", default: "" },
+        //     deliveryDate: { key: "DELIVERYDATE", default: "" },
+        //     money: { key: "MONEY", default: "" },
+        // };
+        let json = JSON.stringify(obj);
+        fs.writeFile(filename, json, (err) => console.log("write file error: " + err));
+        keyword = obj;
+    }
 }
