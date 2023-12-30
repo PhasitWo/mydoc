@@ -1,1 +1,98 @@
-<h1>Procurement</h1>
+<link rel="stylesheet" href="../css/procurement.css" />
+<div id="procurement-container">
+    <h1>Procurement</h1>
+    <br />
+    <form id="procurement-form" onsubmit="createClicked(event)">
+        <p>
+            <label for="file-name">File Name</label><br />
+            <input id="file-name" type="text" class="long-input" required />
+        </p>
+        <p>
+            <label for="save-at">Save at</label><br />
+            <button id="save-at" type="button" onclick="getDir()" formnovalidate>Choose Folder</button>
+            <span id="save-at-path"></span>
+        </p>
+        <p>
+            <label for="shop">ร้านค้า</label><br />
+            <select id="shop" required onchange="loadControlNumber()">
+                <option disabled selected value="">-select an option-</option>
+                <option value="1">3พ.</option>
+                <option value="2">บำเหน็จ</option>
+            </select>
+        </p>
+        <p class="vertical">
+            <label for="delivery-number">เลขที่ใบส่งของ(auto)</label>
+            <input id="delivery-number" data-empty-row="" type="number" min="1" required readonly />
+        </p>
+        <p class="vertical">
+            <label for="delivery-date">ใบส่งของลงวันที่</label>
+            <input id="delivery-date" type="date" />
+        </p>
+        <br />
+        <p class="vertical">
+            <label for="buy">ซื้อพัสดุ</label>
+            <input id="buy" type="text" list="buy-list" required />
+            <datalist id="buy-list">
+                <option value="วัสดุการศึกษา"></option>
+                <option value="วัสดุสำนักงาน"></option>
+                <option value="หนังสือเรียน"></option>
+            </datalist>
+        </p>
+        <p class="vertical">
+            <label for="project">โครงการ</label>
+            <input id="project" type="text" />
+        </p>
+        <p class="vertical">
+            <label for="money">จำนวนเงิน</label>
+            <input id="money" type="number" min="0" required />
+        </p>
+        <p>
+            <label for="gov-name">ส่วนราชการ</label><br />
+            <input
+                id="gov-name"
+                type="text"
+                class="long-input"
+                required
+                autocomplete="off"
+                list="gov-list"
+                onchange="loadInfo()"
+            />
+            <datalist id="gov-list"></datalist>
+            <span id="gov-name-status" style="font-size: 14px"></span>
+        </p>
+        <p>
+            <label for="address">ที่อยู่</label><br />
+            <input id="address" type="text" class="long-input" />
+        </p>
+        <p>
+            <label for="person1">ประธานกรรมการ</label><br />
+            <input id="person1" type="text" class="medium-input" />
+        </p>
+        <p>
+            <label for="person2">กรรมการ1</label><br />
+            <input id="person2" type="text" class="medium-input" />
+        </p>
+        <p>
+            <label for="person3">กรรมการ2</label><br />
+            <input id="person3" type="text" class="medium-input" />
+        </p>
+        <p>
+            <label for="person4">พัสดุ</label><br />
+            <input id="person4" type="text" class="medium-input" />
+        </p>
+        <p>
+            <label for="person5">หัวหน้าพัสดุ</label><br />
+            <input id="person5" type="text" class="medium-input" />
+        </p>
+        <p>
+            <label for="head">ผู้อำนวยการ</label><br />
+            <input id="head" type="text" class="medium-input" />
+        </p>
+        <span style="font-size: 12px;">*ในเวอร์ชันนี้ข้อมูลโรงเรียนหากมีการเปลี่ยนแปลงจะไม่ได้ update ลง database</span>
+        <p>
+            <br />
+            <button id="create" type="submit">Create</button>
+        </p>
+    </form>
+</div>
+<script src="../js/procurement.js"></script>
