@@ -30,7 +30,7 @@ input {
 input[type="text"],
 input[type="number"],
 input[type="date"] {
-    background-color: #424549;
+    background-color: #424249;
     border-radius: 5px;
     border-style: none;
     color: #bdbdbd;
@@ -41,7 +41,7 @@ input:focus {
 }
 
 select {
-    background-color: #424549;
+    background-color: #424249;
     appearance: none;
     color: #bdbdbd;
     border-radius: 6px;
@@ -56,9 +56,9 @@ select:focus {
 #create {
     font-weight: bold;
     font-size: medium;
-    color: whitesmoke;
-    background-color: #7289da;
-    border-radius: 50px;
+    color: var(--electronjs-color);
+    background-color: var(--accent-color);
+    border-radius: 10px;
     border: none;
     text-align: center;
     width: 100px;
@@ -66,20 +66,21 @@ select:focus {
 }
 
 #create:active {
-    background-color: #4e5e98;
-    color: rgb(172, 171, 171);
+    background-color: var(--electronjs-color);
+    color: var(--accent-color);
 }
 
 #save-at {
     font-size: small;
     font-weight: bold;
-    color: #1e2124;
+    color: #adadad;
     padding: 0.2em;
-    border: thin solid grey;
-    border-radius: 100px;
+    border: thin solid rgb(128, 128, 128);
+    border-radius: 10px;
+    background-color: #424549;
 }
 
 #save-at:hover,
 #save-at-path {
-    color: #7289da;
+    color: var(--accent-color);
 }

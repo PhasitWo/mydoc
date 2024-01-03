@@ -2,7 +2,7 @@
 $("#link1").click(function () {
     $("#content").load("setting.html");
     document.getElementById("active").style.display = "block";
-    document.getElementById("active").style.top = "0%";
+    document.getElementById("active").style.top = "2%";
     document.getElementById("link1").classList.add("black");
     document.getElementById("link2").classList.remove("black");
     document.getElementById("link3").classList.remove("black");
@@ -23,6 +23,14 @@ $("#link3").click(function () {
     document.getElementById("link2").classList.remove("black");
     document.getElementById("link3").classList.add("black");
 });
+$("#welcome").click(function () {
+    $("#content").load("welcome.html");
+    document.getElementById("active").style.display = "none"
+    document.getElementById("link1").classList.remove("black");
+    document.getElementById("link2").classList.remove("black");
+    document.getElementById("link3").classList.remove("black");
+});
+
 // load database
 var database;
 loadDB().then((result) => {
