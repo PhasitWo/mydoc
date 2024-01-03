@@ -1,5 +1,6 @@
 // navbar
 $("#link1").click(function () {
+    $("#content-style").attr("href", "../css/setting.css");
     $("#content").load("setting.html");
     document.getElementById("active").style.display = "block";
     document.getElementById("active").style.top = "2%";
@@ -8,6 +9,7 @@ $("#link1").click(function () {
     document.getElementById("link3").classList.remove("black");
 });
 $("#link2").click(function () {
+    $("#content-style").attr("href", "../css/procurement.css")
     $("#content").load("procurement.html");
     document.getElementById("active").style.display = "block";
     document.getElementById("active").style.top = "35.33%";
@@ -16,6 +18,7 @@ $("#link2").click(function () {
     document.getElementById("link3").classList.remove("black");
 });
 $("#link3").click(function () {
+    $("#content-style").attr("href", "../css/receipt.css");
     $("#content").load("receipt.html");
     document.getElementById("active").style.display = "block";
     document.getElementById("active").style.top = "68.66%";
