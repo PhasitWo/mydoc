@@ -45,12 +45,6 @@ function loadAddress() {
 }
 
 function validateForm() {
-    for (var id of ["file-name", "shop", "receipt-number", "gov-name", "detail", "money"]) {
-        if (document.getElementById(id).value == "") {
-            console.log(`missing ${id}`);
-            return false;
-        }
-    }
     if (document.getElementById("save-at-path").textContent == "") {
         console.log("missing folder");
         return false;
@@ -98,7 +92,7 @@ async function loadControlNumber() {
 function clearForm() {
     document.getElementById("save-at-path").textContent = "";
     document.getElementById("gov-name-status").textContent = "";
-    document.getElementById("receipt-form").reset()
+    document.getElementById("receipt-form").reset();
 }
 
 async function createClicked(event) {
@@ -129,7 +123,7 @@ async function createClicked(event) {
     } catch (err) {
         loadingEnd();
         console.log(err);
-        let cause = err.message.split(" || ")[1]
+        let cause = err.message.split(" || ")[1];
         if (cause == "control file is currently opened") {
             api.openErrorBox("Receipt: " + createClicked.name, cause + ",\nplease close control file");
             return;
@@ -155,11 +149,23 @@ async function createClicked(event) {
             api.openErrorBox("Receipt: " + createClicked.name, cause + ",\nplease contact developer");
             return;
         }
-    } 
+    }
     setTimeout(() => {
-        loadingEnd()
-        clearForm()
+        loadingEnd();
+        clearForm();
         api.openPath(userInput.saveAt + "/" + userInput.fileName + ".xlsx");
-    }, 1500)
-    
+    }, 1500);
+}
+
+function checkInvalidChar() {
+    for (let char of ["\\", "/", ":", "*", "?", "|", "<", ">", '"']) {
+        let val = document.getElementById("file-name").value;
+        if (val.includes(char)) {
+            document.getElementById("file-name").value = val.replace(char, "");
+            api.openErrorBox(
+                "Receipt: " + checkInvalidChar.name,
+                'File Name cannot contains these characters\n\\  /  :  *  ?  |  <  >  "'
+            );
+        }
+    }
 }

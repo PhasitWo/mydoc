@@ -5,7 +5,7 @@
     <form id="receipt-form" onsubmit="createClicked(event)">
         <p>
             <label for="file-name">File Name</label><br />
-            <input id="file-name" type="text" required />
+            <input id="file-name" type="text" required onkeyup="checkInvalidChar()" />
         </p>
         <p>
             <label for="save-at">Save at</label><br />

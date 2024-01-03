@@ -1,0 +1,21 @@
+{
+    "deliveryNumber": { "key": "DELIVERYNUMBER", "default": "" },
+    "deliveryDate": { "key": "DELIVERYDATE", "default": "..................................." },
+    "govName": {
+        "key": "NAME",
+        "default": ".........................................................................................."
+    },
+    "address": {
+        "key": "ADDRESS2",
+        "default": ".........................................................................................."
+    },
+    "buy": { "key": "BUY", "default": "" },
+    "project": { "key": "PROJECT", "default": "......" },
+    "money": { "key": "MONEY", "default": "" },
+    "headchecker": { "key": "HEADCHECKER", "default": "" },
+    "checker1": { "key": "CHECKER1", "default": "" },
+    "checker2": { "key": "CHECKER2", "default": "" },
+    "object": { "key": "_OBJECT", "default": "" },
+    "headobject": { "key": "HEADOBJECT", "default": "" },
+    "boss": { "key": "BOSS", "default": "" }
+}

@@ -5,7 +5,7 @@
     <form id="procurement-form" onsubmit="createClicked(event)">
         <p>
             <label for="file-name">File Name</label><br />
-            <input id="file-name" type="text" class="long-input" required />
+            <input id="file-name" type="text" class="long-input" required onkeyup="checkInvalidChar()" />
         </p>
         <p>
             <label for="save-at">Save at</label><br />
@@ -65,28 +65,28 @@
             <input id="address" type="text" class="long-input" />
         </p>
         <p>
-            <label for="person1">ประธานกรรมการ</label><br />
-            <input id="person1" type="text" class="medium-input" />
+            <label for="headchecker">ประธานกรรมการ</label><br />
+            <input id="headchecker" type="text" class="medium-input" />
         </p>
         <p>
-            <label for="person2">กรรมการ1</label><br />
-            <input id="person2" type="text" class="medium-input" />
+            <label for="checker1">กรรมการ1</label><br />
+            <input id="checker1" type="text" class="medium-input" />
         </p>
         <p>
-            <label for="person3">กรรมการ2</label><br />
-            <input id="person3" type="text" class="medium-input" />
+            <label for="checker2">กรรมการ2</label><br />
+            <input id="checker2" type="text" class="medium-input" />
         </p>
         <p>
-            <label for="person4">พัสดุ</label><br />
-            <input id="person4" type="text" class="medium-input" />
+            <label for="object">พัสดุ</label><br />
+            <input id="object" type="text" class="medium-input" />
         </p>
         <p>
-            <label for="person5">หัวหน้าพัสดุ</label><br />
-            <input id="person5" type="text" class="medium-input" />
+            <label for="headobject">หัวหน้าพัสดุ</label><br />
+            <input id="headobject" type="text" class="medium-input" />
         </p>
         <p>
-            <label for="head">ผู้อำนวยการ</label><br />
-            <input id="head" type="text" class="medium-input" />
+            <label for="boss">ผู้อำนวยการ</label><br />
+            <input id="boss" type="text" class="medium-input" />
         </p>
         <span style="font-size: 12px;">*ในเวอร์ชันนี้ข้อมูลโรงเรียนหากมีการเปลี่ยนแปลงจะไม่ได้ update ลง database</span>
         <p>

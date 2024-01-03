@@ -9,6 +9,7 @@ contextBridge.exposeInMainWorld("api", {
     saveEssentialPath: saveEssentialPath,
     getControlNumber: getControlNumber,
     createReceipt: createReceipt,
+    createProcurement: createProcurement,
     openDialog: () => ipcRenderer.invoke("openDialog"),
     openErrorBox: (title, content) => ipcRenderer.invoke("openErrorBox", title, content),
     openPath: (filePath) => shell.openPath(filePath),
@@ -73,12 +74,12 @@ async function loadDB() {
             arr.push({
                 name: row.getCell(2).value,
                 address: row.getCell(3).value,
-                person1: row.getCell(4).value,
-                person2: row.getCell(5).value,
-                person3: row.getCell(6).value,
-                person4: row.getCell(7).value,
-                person5: row.getCell(8).value,
-                head: row.getCell(9).value,
+                headchecker: row.getCell(4).value,
+                checker1: row.getCell(5).value,
+                checker2: row.getCell(6).value,
+                object: row.getCell(7).value,
+                headobject: row.getCell(8).value,
+                boss: row.getCell(9).value,
             });
         }
         return arr;
@@ -154,23 +155,24 @@ async function writeForm(formPath, input, keyword) {
     try {
         var workbook = new excel.Workbook();
         workbook = await workbook.xlsx.readFile(formPath);
-        var ws = workbook.worksheets[0];
     } catch (err) {
         throw Error("api.writeForm failed", { cause: "error reading form file" });
     }
     try {
-        for (let i = 1; i <= ws.rowCount; i++) {
-            for (let j = 1; j <= ws.columnCount; j++) {
-                let cell = ws.getCell(i, j);
-                let value = cell.value;
-                if (typeof value != "string") continue;
-                for (let prop in keyword) {
-                    let replacement = input[prop];
-                    if (replacement == "") replacement = keyword[prop].default;
-                    if (value.includes(keyword[prop].key)) value = value.replaceAll(keyword[prop].key, replacement);
+        for (let ws of workbook.worksheets) {
+            for (let i = 1; i <= ws.rowCount; i++) {
+                for (let j = 1; j <= ws.columnCount; j++) {
+                    let cell = ws.getCell(i, j);
+                    let value = cell.value;
+                    if (typeof value != "string") continue;
+                    for (let prop in keyword) {
+                        let replacement = input[prop];
+                        if (replacement == "") replacement = keyword[prop].default;
+                        if (value.includes(keyword[prop].key)) value = value.replaceAll(keyword[prop].key, replacement);
+                    }
+                    if (isNumeric(value)) value = Number(value); // convert to type number if that cell is a number
+                    cell.value = value;
                 }
-                if (isNumeric(value)) value = Number(value); // convert to type number if that cell is a number
-                cell.value = value;
             }
         }
     } catch (err) {
@@ -298,12 +300,12 @@ async function createProcurement({
     money,
     govName,
     address,
-    person1,
-    person2,
-    person3,
-    person4,
-    person5,
-    head
+    headchecker,
+    checker1,
+    checker2,
+    object,
+    headobject,
+    boss,
 }) {
     // check both file
     fs.open(procurementControl, "r+", (err, data) => {
@@ -341,18 +343,61 @@ async function createProcurement({
         }
     } else {
         // Create file
-        // let obj = {
-        //     receiptNumber: { key: "BILLNUMBER", default: "" },
-        //     receiptDate: { key: "BILLDATE", default: ".".repeat(35) },
-        //     govName: { key: "NAME", default: "" },
-        //     address: { key: "ADDRESS2", default: ".".repeat(150) },
-        //     detail: { key: "DETAIL", default: "" },
-        //     deliveryNumber: { key: "DELIVERYNUMBER", default: "" },
-        //     deliveryDate: { key: "DELIVERYDATE", default: "" },
-        //     money: { key: "MONEY", default: "" },
-        // };
+        let obj = {
+            deliveryNumber: { key: "DELIVERYNUMBER", default: "" },
+            deliveryDate: { key: "DELIVERYDATE", default: ".".repeat(35) },
+            govName: { key: "NAME", default: ".".repeat(90) },
+            address: { key: "ADDRESS2", default: ".".repeat(90) },
+            buy: { key: "BUY", default: "" },
+            project: { key: "PROJECT", default: ".".repeat(6) },
+            money: { key: "MONEY", default: "" },
+            headchecker: { key: "HEADCHECKER", default: "" },
+            checker1: { key: "CHECKER1", default: "" },
+            checker2: { key: "CHECKER2", default: "" },
+            object: { key: "_OBJECT", default: "" },
+            headobject: { key: "HEADOBJECT", default: "" },
+            boss: { key: "BOSS", default: "" },
+        };
         let json = JSON.stringify(obj);
         fs.writeFile(filename, json, (err) => console.log("write file error: " + err));
         keyword = obj;
     }
+    // write form
+    // convert to Thai date
+    if (deliveryDate != "") {
+        let date = new Date(deliveryDate);
+        deliveryDate = date.toLocaleDateString("th-TH", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        });
+    }
+    let input = {
+        deliveryNumber: deliveryNumber,
+        deliveryDate: deliveryDate,
+        govName: govName,
+        address: address,
+        buy: buy,
+        project: project,
+        money: money,
+        headchecker: headchecker,
+        checker1: checker1,
+        checker2: checker2,
+        object: object,
+        headobject: headobject,
+        boss: boss,
+    };
+    try {
+        var formWorkbook = await writeForm(procurementForm, input, keyword);
+    } catch (err) {
+        console.log(err);
+        if (err.cause == "error reading form file" || err.cause == "error writing form file")
+            throw Error("api.createProcurement failed" + " <= " + err.message + " || " + err.cause);
+    }
+    // both writeControl and writeForm complete
+    controlWorkbook.xlsx.writeFile(procurementControl);
+    formWorkbook.xlsx.writeFile(saveAt + "/" + fileName + ".xlsx");
 }
+
+// 1. แก้หัวใบส่งของ
+// 2. address2 ไม่ถูกแทนที่
