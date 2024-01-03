@@ -73,6 +73,8 @@ html {
     font-family: "Nunito", "Kanit";
     color: #bdbdbd;
     overflow-x: hidden;
+    max-width: 820;
+    max-height: 750;
 }
 
 body {
@@ -110,8 +112,9 @@ h1 {
 #content {
     margin-left: 120px;
     padding-left: 40px;
+    padding-right: 40px;
     height: 100%;
-    width: 100%;
+    width: 100% - 120px;
     background-color: #282b30;
 }
 
