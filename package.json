@@ -1,6 +1,6 @@
 {
     "name": "mydoc",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "bill and doc",
     "main": "main.js",
     "scripts": {
