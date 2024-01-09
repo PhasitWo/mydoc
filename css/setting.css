@@ -25,8 +25,8 @@ input::file-selector-button:hover {
 }
 
 #save-button:active {
-    background-color: #205921;
-    color: rgb(172, 171, 171);
+    background-color: var(--electronjs-color);
+    color: var(--accent-color);
 }
 
 .path {
@@ -41,8 +41,8 @@ h3 {
     color: whitesmoke;
 }
 
-#procurement,
-#receipt {
+#procurement-container,
+#receipt-container {
     background-color: rgb(46, 48, 59);
     border-radius: 20px;
     padding: 20px 20px;
