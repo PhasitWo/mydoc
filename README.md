@@ -1,4 +1,4 @@
-**MyDoc** - Procurment and Receipt document creator
+**MyDoc** - Procurement and Receipt document creator
 
 - Electronjs Project
 - langs:
