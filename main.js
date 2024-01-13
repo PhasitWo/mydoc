@@ -1,4 +1,4 @@
-const { app, BrowserWindow, dialog, ipcMain } = require("electron");
+const { app, BrowserWindow, dialog, ipcMain, process } = require("electron");
 const path = require("node:path");
 
 const createWindow = () => {
@@ -27,6 +27,7 @@ const createWindow = () => {
 
 app.whenReady().then(() => {
     createWindow();
+    // console.log(process.resourcesPath);
 });
 app.on("window-all-closed", () => {
     app.quit();
