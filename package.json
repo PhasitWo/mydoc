@@ -7,7 +7,7 @@
         "start": "electron-forge start",
         "package": "electron-forge package",
         "make": "electron-forge make",
-        "preview": "electron ."
+        "preview": "electron . --trace-warnings"
     },
     "author": "phasitWo",
     "license": "ISC",

@@ -1,5 +1,6 @@
-const { app, BrowserWindow, dialog, ipcMain, process } = require("electron");
+const { app, BrowserWindow, dialog, ipcMain, process, shell } = require("electron");
 const path = require("node:path");
+const fs = require("fs");
 
 const createWindow = () => {
     const win = new BrowserWindow({
@@ -21,14 +22,24 @@ const createWindow = () => {
         dialog.showErrorBox(title, content);
         return;
     });
+    ipcMain.handle("test", () => __dirname);
     // win.removeMenu();
     win.loadFile("./templates/index.html");
 };
 
 app.whenReady().then(() => {
     createWindow();
-    // console.log(process.resourcesPath);
+    try {
+        shell.openPath(path.join(__dirname, "..", "mydoc-fast-api.exe"));
+    } catch (err) {
+        fs.writeFileSync("error-log.txt", err.message);
+    }
 });
 app.on("window-all-closed", () => {
-    app.quit();
+    try {
+        const execSync = require("child_process").execSync;
+        execSync("taskkill /im mydoc-fast-api.exe /f");
+    } finally {
+        app.quit();
+    }
 });

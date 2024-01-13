@@ -1,4 +1,4 @@
-const { contextBridge, ipcRenderer, shell } = require("electron");
+const { contextBridge, ipcRenderer, shell} = require("electron");
 var fs = require("fs");
 var excel = require("exceljs");
 
@@ -13,6 +13,7 @@ contextBridge.exposeInMainWorld("api", {
     openDialog: () => ipcRenderer.invoke("openDialog"),
     openErrorBox: (title, content) => ipcRenderer.invoke("openErrorBox", title, content),
     openPath: (filePath) => shell.openPath(filePath),
+    test:() => ipcRenderer.invoke("test")
 });
 
 function getEssentialPath() {
@@ -151,35 +152,23 @@ async function writeControl(filePath, emptyRow, number, goveName, detail, money,
     return workbook; // not save yet
 }
 
-async function writeForm(formPath, input, keyword) {
-    try {
-        var workbook = new excel.Workbook();
-        workbook = await workbook.xlsx.readFile(formPath);
-    } catch (err) {
-        throw Error("api.writeForm failed", { cause: "error reading form file" });
-    }
-    try {
-        for (let ws of workbook.worksheets) {
-            for (let i = 1; i <= ws.rowCount; i++) {
-                for (let j = 1; j <= ws.columnCount; j++) {
-                    let cell = ws.getCell(i, j);
-                    let value = cell.value;
-                    if (typeof value != "string") continue;
-                    for (let prop in keyword) {
-                        let replacement = input[prop];
-                        if (replacement == "") replacement = keyword[prop].default;
-                        if (value.includes(keyword[prop].key)) value = value.replaceAll(keyword[prop].key, replacement);
-                    }
-                    if (isNumeric(value)) value = Number(value); // convert to type number if that cell is a number
-                    cell.value = value;
-                }
-            }
-        }
-    } catch (err) {
-        console.log(err);
-        throw Error("api.writeForm failed", { cause: "error writing form file" });
-    }
-    return workbook;
+async function writeForm(formPath, saveAt, input, keyword) {
+    const response = await fetch("http://127.0.0.1:8000/write_form/", {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            formPath: formPath,
+            saveAt: saveAt,
+            input: input,
+            keyword: keyword,
+        }),
+    });
+    const status = await response.json().status;
+    if (status === "FAIL") throw Error("FASTAPI.writeForm failed", { cause: "error writing form file" });
+    
 }
 
 async function createReceipt({
@@ -373,30 +362,30 @@ async function createProcurement({
         });
     }
     let input = {
-        deliveryNumber: deliveryNumber,
-        deliveryDate: deliveryDate,
-        govName: govName,
-        address: address,
-        buy: buy,
-        project: project,
-        money: money,
-        headchecker: headchecker,
-        checker1: checker1,
-        checker2: checker2,
-        object: object,
-        headobject: headobject,
-        boss: boss,
+        deliveryNumber,
+        deliveryDate,
+        govName,
+        address,
+        buy,
+        project,
+        money,
+        headchecker,
+        checker1,
+        checker2,
+        object,
+        headobject,
+        boss,
     };
     try {
-        var formWorkbook = await writeForm(procurementForm, input, keyword);
+        await writeForm(procurementForm, saveAt + "/" + fileName + ".xlsx", input, keyword);
     } catch (err) {
         console.log(err);
         if (err.cause == "error reading form file" || err.cause == "error writing form file")
             throw Error("api.createProcurement failed" + " <= " + err.message + " || " + err.cause);
+        throw err
     }
     // both writeControl and writeForm complete
     controlWorkbook.xlsx.writeFile(procurementControl);
-    formWorkbook.xlsx.writeFile(saveAt + "/" + fileName + ".xlsx");
 }
 
 // 1. แก้หัวใบส่งของ
