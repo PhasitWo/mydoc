@@ -1,0 +1,5 @@
+{
+    "path": "C:/Users/PhasitWo/Desktop/Folders/ElectronProject/mydoc/xlsx/หจก New Procurement Form.xlsx",
+    "input": { "checker1": "HELLO FROM FASTAPI" },
+    "keyword": { "checker1": { "key": "CHECKER1", "default": "" } }
+}
