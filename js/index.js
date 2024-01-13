@@ -75,14 +75,14 @@ async function loadDB() {
                 "Index: " + loadDB.name,
                 "error loading database file\nmake sure you put in the right path"
             );
-            $("#link1").click();
+            $("#setting").click();
             return;
         }
     }
 
     if (result == null) {
         api.openErrorBox("Index: " + loadDB.name, "please set path to database in Setting");
-        $("#link1").click();
+        $("#setting").click();
         return;
     }
     console.log("database loaded");

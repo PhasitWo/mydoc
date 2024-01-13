@@ -44,6 +44,6 @@ document.getElementById("save-button").onclick = () => {
     setTimeout(() => {
         loadingEnd();
         // refresh page
-        $("#link1").click();
+        $("#setting").click();
     }, 1500);
 };

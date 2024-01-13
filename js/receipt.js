@@ -83,7 +83,7 @@ async function loadControlNumber() {
             "Receipt: " + loadControlNumber.name,
             "error loading control number, please contact developer"
         );
-        $("#link3").click();
+        $("#receipt").click();
     }
     document.getElementById("receipt-number").value = result.next;
     document.getElementById("receipt-number").dataset.emptyRow = result.emptyRow;
