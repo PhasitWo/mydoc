@@ -127,26 +127,28 @@ async function createClicked(event) {
         if (cause == "control file is currently opened") {
             api.openErrorBox("Receipt: " + createClicked.name, cause + ",\nplease close control file");
             return;
-        }
-        if (cause == "That file already exists") {
+        } else if (cause == "That file already exists") {
             api.openErrorBox("Receipt: " + createClicked.name, cause + ",\nplease change file name");
             return;
-        }
-
-        if (cause == "error reading receipt-keyword.json") {
+        } else if (cause == "error reading receipt-keyword.json") {
             api.openErrorBox(
                 "Receipt: " + createClicked.name,
                 cause + ",\nplease make sure 'receipt-keyword.json' is not currently opened"
             );
             return;
-        }
-        if (
+        } else if (
             cause == "The row is not empty" ||
             cause == "error reading control file" ||
             cause == "error reading form file" ||
             cause == "error writing form file"
         ) {
             api.openErrorBox("Receipt: " + createClicked.name, cause + ",\nplease contact developer");
+            return;
+        } else {
+            api.openErrorBox(
+                "Receipt: " + createClicked.name,
+                "Unkown Error Occur!\n" + err.message + ",\nplease contact developer"
+            );
             return;
         }
     }
