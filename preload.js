@@ -2,7 +2,6 @@ const { contextBridge, ipcRenderer, shell } = require("electron");
 var fs = require("fs");
 var excel = require("exceljs");
 const path = require("node:path");
-const { resolve } = require("path");
 
 // global var
 contextBridge.exposeInMainWorld("api", {
@@ -267,7 +266,7 @@ async function writeForm(formPath, saveAt, input, keyword) {
     return new Promise((resolve, reject) => {
         fs.writeFileSync("middleware.json", JSON.stringify({ formPath, saveAt, input, keyword }));
         const { spawn } = require("child_process");
-        let child = spawn("python/writeForm.exe");
+        let child = spawn(path.join(__dirname , ".." , "writeForm.exe"));
         let status;
         // timeout
         setTimeout(() => {
