@@ -1,8 +1,0 @@
-{
-    "path": "C:/Users/PhasitWo/Desktop/Folders/ElectronProject/mydoc/xlsx/หจก New Procurement Form.xlsx",
-    "input": { "checker1": "HELLO FROM FASTAPI" },
-    "keyword": { "checker1": { "key": "CHECKER1", "default": "" } }
-}
-
-pyinstaller --noconfirm --onefile --console --name "mydoc-fast-api" --hide-console "hide-early" --add-data "C:/Users/PhasitWo/Desktop/Folders/ElectronProject/mydoc/fastAPI/main.py;."  
-"C:/Users/PhasitWo/Desktop/Folders/ElectronProject/mydoc/fastAPI/main.py"

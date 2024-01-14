@@ -29,17 +29,7 @@ const createWindow = () => {
 
 app.whenReady().then(() => {
     createWindow();
-    try {
-        shell.openPath(path.join(__dirname, "..", "mydoc-fast-api.exe"));
-    } catch (err) {
-        fs.writeFileSync("error-log.txt", err.message);
-    }
 });
 app.on("window-all-closed", () => {
-    try {
-        const execSync = require("child_process").execSync;
-        execSync("taskkill /im mydoc-fast-api.exe /f");
-    } finally {
-        app.quit();
-    }
+    app.quit();
 });

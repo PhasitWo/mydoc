@@ -1,7 +1,7 @@
 module.exports = {
     packagerConfig: {
         asar: true,
-        extraResource: ["fastAPI/mydoc-fast-api.exe"],
+        extraResource: ["python/writeForm.exe"],
     },
     rebuildConfig: {},
     makers: [

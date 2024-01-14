@@ -162,7 +162,7 @@ async function createClicked(event) {
             return;
         }
         else {
-            api.openErrorBox("Procurement: " + createClicked.name, "Unkown Error Occur!" + ",\nplease contact developer");
+            api.openErrorBox("Procurement: " + createClicked.name, "Unkown Error Occur!\n" + err.message + ",\nplease contact developer");
             return;
         }
     }
