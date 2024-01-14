@@ -7,7 +7,7 @@
         "start": "electron-forge start",
         "package": "electron-forge package",
         "make": "electron-forge make",
-        "preview": "electron ."
+        "preview": "electron . --trace-warnings"
     },
     "author": "phasitWo",
     "license": "ISC",
@@ -20,12 +20,14 @@
         "@electron-forge/plugin-auto-unpack-natives": "^7.2.0",
         "electron": "^28.0.0",
         "exceljs": "^4.4.0",
-        "fs": "^0.0.1-security"
+        "fs": "^0.0.1-security",
+        "pythonia": "^1.1.2"
     },
     "dependencies": {
         "@electron/remote": "^2.1.1",
         "electron-squirrel-startup": "^1.0.0",
         "exceljs": "^4.4.0",
-        "fs": "^0.0.1-security"
+        "fs": "^0.0.1-security",
+        "pythonia": "^1.1.2"
     }
 }
